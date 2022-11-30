@@ -1,0 +1,19 @@
+[run]
+omit =
+    docs/*
+    tests/*
+    _version.py
+    __init__.py
+    **/__init__.py
+    due.py
+    .*rc
+    versioneer.py
+    setup.py
+    */tests/*
+    */_version.py
+    */__init__.py
+    */**/__init__.py
+    */due.py
+    */.*rc
+    */versioneer.py
+    */setup.py

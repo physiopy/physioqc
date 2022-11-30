@@ -1,0 +1,4 @@
+<reponame>/_version.py export-subst
+
+*.py eol=lf
+*.rst eol=lf

@@ -1,0 +1,13 @@
+{
+    "license":"<License>",
+    "title":"<Title>",
+    "upload_type":"software",
+    "creators":[
+        {
+            "orcid":"xxxx-xxxx-xxxx-xxxx",
+            "affiliation":"<Affiliation>",
+            "name":"<Name>"
+        }
+    ],
+    "access_right":"open"
+}
