@@ -1,12 +1,12 @@
 {
-    "license":"<License>",
-    "title":"<Title>",
+    "license":"Apache-2.0",
+    "title":"physioqc: A toolbox for physiological data quality control",
     "upload_type":"software",
     "creators":[
         {
-            "orcid":"xxxx-xxxx-xxxx-xxxx",
-            "affiliation":"<Affiliation>",
-            "name":"<Name>"
+            "orcid":"0000-0002-2553-3327",
+            "affiliation":"Medical Imaging Processing Lab, Center for Neuroprosthetics, École Polytechnique Fédérale de Lausanne",
+            "name":"Stefano Moia"
         }
     ],
     "access_right":"open"

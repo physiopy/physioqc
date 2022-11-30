@@ -9,11 +9,11 @@ omit =
     .*rc
     versioneer.py
     setup.py
-    */tests/*
-    */_version.py
-    */__init__.py
-    */**/__init__.py
-    */due.py
-    */.*rc
-    */versioneer.py
-    */setup.py
+    physioqc/tests/*
+    physioqc/_version.py
+    physioqc/__init__.py
+    physioqc/**/__init__.py
+    physioqc/due.py
+    physioqc/.*rc
+    physioqc/versioneer.py
+    physioqc/setup.py

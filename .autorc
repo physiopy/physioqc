@@ -7,7 +7,7 @@
     ["pr-body-labels", { "disabledLabels": ["release", "Release", "Released", "Prereleased", "Skip release"] }]
   ],
   "owner": "physiopy",
-  "repo": "<reponame>",
+  "repo": "physioqc",
   "name": "Stefano Moia",
   "email": "s.moia.research@gmail.com",
   "labels": [

@@ -23,7 +23,7 @@ jobs:
     # Change the version below to your required version of python
     docker:
       - image: cimg/python:3.7
-    working_directory: /tmp/src/<reponame>
+    working_directory: /tmp/src/physioqc
     resource_class: medium
     # Checkout the code as the first step. This is a dedicated CircleCI step.
     # The python orb's install-packages step will install the dependencies from a Pipfile via Pipenv by default.
@@ -44,7 +44,7 @@ jobs:
           name: Run tests
           # This assumes pytest is installed via the install-package step above
           command: |
-            pytest --cov=./<reponame>
+            pytest --cov=./physioqc
             mkdir /tmp/src/coverage
             mv ./.coverage /tmp/src/coverage/.coverage.py37
       - store_artifacts:
@@ -61,7 +61,7 @@ jobs:
   test310:
     docker:
       - image: cimg/python:3.10
-    working_directory: /tmp/src/<reponame>
+    working_directory: /tmp/src/physioqc
     resource_class: medium
     steps:
       - checkout
@@ -73,7 +73,7 @@ jobs:
       - run:
           name: Run tests
           command: |
-            pytest --cov=./<reponame>
+            pytest --cov=./physioqc
             mkdir /tmp/src/coverage
             mv ./.coverage /tmp/src/coverage/.coverage.py310
       - store_artifacts:
@@ -86,7 +86,7 @@ jobs:
   style_check:
     docker:
       - image: cimg/python:3.7
-    working_directory: /tmp/src/<reponame>
+    working_directory: /tmp/src/physioqc
     resource_class: small
     steps:
       - checkout
@@ -99,11 +99,11 @@ jobs:
           name: Check style
           command: |
             isort --check .
-            black --check <reponame>
-            flake8 ./<reponame>
+            black --check physioqc
+            flake8 ./physioqc
 
   merge_coverage:
-    working_directory: /tmp/src/<reponame>
+    working_directory: /tmp/src/physioqc
     docker:
       - image: cimg/python:3.10
     resource_class: small

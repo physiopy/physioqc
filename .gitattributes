@@ -1,4 +1,4 @@
-<reponame>/_version.py export-subst
+physioqc/_version.py export-subst
 
 *.py eol=lf
 *.rst eol=lf
