@@ -29,12 +29,12 @@ def std(signal):
 
 def tSNR(signal):  
     """
-    Calculate standard deviation across input channels of signal.
+    Calculate temporal signal to noise ration of signal.
     
     Parameters
     ----------
     tSNR : function
-        Calculate temporal signal to noise ration
+        Calculate temporal signal to noise ratio.
     args : signal
         ND array with signal of some human biometric data, hopefully from a living human.
         
