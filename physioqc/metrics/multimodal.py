@@ -47,3 +47,4 @@ def tSNR(signal):
     std = np.std(signal, axis=0)
     tSNR_val = me / std
     return tSNR_val
+    
