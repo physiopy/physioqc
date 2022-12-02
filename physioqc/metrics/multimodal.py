@@ -13,16 +13,37 @@ def std(signal):
     Parameters
     ----------
     std : function
-        Calculate standard deviation across input channels
+        Calculate standard deviation across input channels.
+    args : signal (X, n) :obj:`numpy.ndarray`
+        ND array with signal of some human biometric data, hopefully from a living human.
+        signal, of shape (n_channels, )
+        
+    Returns
+    -------
+    N-sized array :obj:`numpy.ndarray`
+        Standard deviation of signal.
+    """
+    std_val = np.std(signal, axis=0)
+    return std_val
+
+
+def tSNR(signal):  
+    """
+    Calculate standard deviation across input channels of signal.
+    
+    Parameters
+    ----------
+    tSNR : function
+        Calculate temporal signal to noise ration
     args : signal
         ND array with signal of some human biometric data, hopefully from a living human.
         
     Returns
     -------
-    std_val : N-sized array
-        Standard deviation of signal.
-
+    N-sized array :obj:`numpy.ndarray`
+        Temporal signal to noise ratio of signal.
     """
-
-     std_val = np.std(signal, axis = 0)
-    return std_val
+    me = np.mean(signal, axis=0)
+    std = np.std(signal, axis=0)
+    tSNR_val = me / std
+    return tSNR_val
