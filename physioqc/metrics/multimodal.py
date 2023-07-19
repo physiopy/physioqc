@@ -117,3 +117,29 @@ def metric_dictionary(signal: np.array, perc: List = [5, 95]):
     metric_dict['min'] = np.min(signal, axis=0)
 
     return metric_dict
+
+
+def peak_distance(ph: pk.Physio, perc: List = [5, 95]):
+    """Calculates the timing between peaks and returns a dictionary containing
+    diferent metrics.
+
+    Parameters
+    ----------
+    ph : pk.Physio
+        A pk.Physio object, that contains peak information.
+    perc : List, optional
+        Percentiles to calculate, by default [5, 95]
+
+    Returns
+    -------
+    Dict
+        A metric_dictionarys
+    """
+    diff_peak = np.diff(ph.peaks, axis=0)
+
+    metric_dict = metric_dictionary(diff_peak, perc=perc)
+
+    return metric_dict
+
+
+
