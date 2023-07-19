@@ -142,4 +142,29 @@ def peak_distance(ph: pk.Physio, perc: List = [5, 95]):
     return metric_dict
 
 
+def peak_amplitude(ph: pk.Physio, perc: List = [5, 95]):
+    """Calculates different metrics for the amplitude of peaks (peak - trough).
+
+    Parameters
+    ----------
+    ph : pk.Physio
+        pk.Physio object with peak and trough information.
+    perc : List, optional
+        Percentiles to calculate, by default [5, 95]
+
+    Returns
+    -------
+    Dict
+        A metric dictionary
+    """
+
+    # Assuming that peaks and troughs are aligned. Last peak has no trough.
+    peak_amp = ph.data[ph.peaks[:-1]]
+    trough_amp = ph.data[ph.troughs]
+    peak_amplitude = peak_amp - trough_amp
+
+    metric_dict = metric_dictionary(peak_amplitude, perc=perc)
+
+    return metric_dict
+
 
