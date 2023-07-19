@@ -135,6 +135,8 @@ def peak_distance(ph: pk.Physio, perc: List = [5, 95]):
     Dict
         A metric_dictionarys
     """
+
+    # TODO Check if peaks have been estimated.
     diff_peak = np.diff(ph.peaks, axis=0)
 
     metric_dict = metric_dictionary(diff_peak, perc=perc)
@@ -158,6 +160,7 @@ def peak_amplitude(ph: pk.Physio, perc: List = [5, 95]):
         A metric dictionary
     """
 
+    # TODO Check if peaks have been estimated.
     # Assuming that peaks and troughs are aligned. Last peak has no trough.
     peak_amp = ph.data[ph.peaks[:-1]]
     trough_amp = ph.data[ph.troughs]
