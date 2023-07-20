@@ -1,8 +1,9 @@
 """These functions compute RETROICOR regressors (Glover et al. 2000)."""
 # import file
+from typing import List
+
 import numpy as np
 import peakdet as pk
-from typing import List
 
 from .. import references
 from ..due import due
@@ -50,9 +51,16 @@ def tSNR(signal):
     tSNR_val = me / std
     return tSNR_val
 
-def peak_detection(data: pk.Physio, target_fs: float = 40.0, filter_cutoff: float = 2.0,
-                   filter_method: str = "lowpass", filter_order: int = 7,
-                   peak_threshold: float = 0.1, peak_dist: int = 60):
+
+def peak_detection(
+    data: pk.Physio,
+    target_fs: float = 40.0,
+    filter_cutoff: float = 2.0,
+    filter_method: str = "lowpass",
+    filter_order: int = 7,
+    peak_threshold: float = 0.1,
+    peak_dist: int = 60,
+):
     """
     Perform peak detection for further metric extraction and plotting.
 
@@ -81,7 +89,9 @@ def peak_detection(data: pk.Physio, target_fs: float = 40.0, filter_cutoff: floa
     # Downsample the signal - we don't need more than 40 Hz with our MRI data sampling
     ph = pk.operations.interpolate_physio(data, target_fs, kind="linear")
     # Apply a lowpass filter to remove the extreme high frequencies
-    ph = pk.operations.filter_physio(ph, filter_cutoff, method=filter_method, order=filter_order)
+    ph = pk.operations.filter_physio(
+        ph, filter_cutoff, method=filter_method, order=filter_order
+    )
     ph = pk.operations.peakfind_physio(ph, thresh=peak_threshold, dist=peak_dist)
 
     return ph
@@ -106,15 +116,15 @@ def metric_dictionary(signal: np.array, perc: List = [5, 95]):
 
     metric_dict = {}
 
-    metric_dict['mean'] = np.mean(signal, axis=0)
+    metric_dict["mean"] = np.mean(signal, axis=0)
 
-    metric_dict['std'] = np.std(signal, axis=0)
+    metric_dict["std"] = np.std(signal, axis=0)
 
     for ii in perc:
-        metric_dict[f'perc_{ii}'] = np.percentile(signal, q=ii, axis=0)
+        metric_dict[f"perc_{ii}"] = np.percentile(signal, q=ii, axis=0)
 
-    metric_dict['max'] = np.max(signal, axis=0)
-    metric_dict['min'] = np.min(signal, axis=0)
+    metric_dict["max"] = np.max(signal, axis=0)
+    metric_dict["min"] = np.min(signal, axis=0)
 
     return metric_dict
 
@@ -169,5 +179,3 @@ def peak_amplitude(ph: pk.Physio, perc: List = [5, 95]):
     metric_dict = metric_dictionary(peak_amplitude, perc=perc)
 
     return metric_dict
-
-
