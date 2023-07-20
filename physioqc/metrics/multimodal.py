@@ -115,6 +115,29 @@ def max(signal: np.array):
     return max_val
 
 
+def iqr(signal: np.array, q_high: int = 75, q_low: int = 25):
+    """Calculates the Inter Quantile Range (IQR) over the input signal.
+
+    Parameters
+    ----------
+    signal : np.array
+        Physiological data
+    q_high : int, optional
+        higher percentile for IQR, by default 75
+    q_low : int, optional
+        lower percentile for IQR, by default 25
+
+    Returns
+    -------
+    np.array
+        iqr of the signal
+    """
+    p_high, p_low = np.percentile(signal, [q_high, q_low], axis=0)
+    iqr_val = p_high - p_low
+
+    return iqr_val
+
+
 def peak_detection(
     data: pk.Physio,
     peak_threshold: float = 0.1,
