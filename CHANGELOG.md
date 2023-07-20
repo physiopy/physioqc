@@ -1,3 +1,20 @@
+# 0.1.1 (Thu Jul 20 2023)
+
+#### 🐛 Bug Fix
+
+- fix: run pre-commit and update isort ([@smoia](https://github.com/smoia))
+
+#### ⚠️ Pushed to `master`
+
+- int: Fix installation and init issues ([@smoia](https://github.com/smoia))
+- int: Update CI environment ([@smoia](https://github.com/smoia))
+
+#### Authors: 1
+
+- Stefano Moia ([@smoia](https://github.com/smoia))
+
+---
+
 # 0.1.0 (Fri Dec 02 2022)
 
 #### 🚀 Enhancement
