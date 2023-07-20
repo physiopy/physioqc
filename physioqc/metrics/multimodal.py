@@ -73,6 +73,27 @@ def mean(signal: np.array):
     return mean_val
 
 
+def min(signal: np.array):
+    """
+    Calculate min across input channels of signal.
+
+    Parameters
+    ----------
+    min : function
+        Calculate min over input channels.
+    args : signal (X, n) :obj:`numpy.ndarray`
+        ND array with signal of some human biometric data, hopefully from a living human.
+        signal, of shape (n_channels, )
+
+    Returns
+    -------
+    N-sized array :obj:`numpy.ndarray`
+        min of signal.
+    """
+    min_val = np.min(signal, axis=0)
+    return min_val
+
+
 def peak_detection(
     data: pk.Physio,
     peak_threshold: float = 0.1,
