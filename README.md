@@ -52,7 +52,7 @@ Feel free to ask help to the contributors over gitter, happy coding and (hopeful
 
 ## The BrainWeb
 BrainWeb participants, welcome!
-We have a milestone [here](https://github.com/physiopy/physioqc/milestone/5) as a collection of issues you could work on with our help. 
+We have a milestone [here](https://github.com/physiopy/physioqc/milestone/5) as a collection of issues you could work on with our help.
 Check the issues with a `BrainWeb` label. Of course, they are only suggestions, so feel free to tackle any issue you want, even open new ones!
 You can also contact us on Gitter, in the BrainHack Mattermost (<a href="https://mattermost.brainhack.org/brainhack/channels/physiopy">#physiopy</a>), and don't hesitate to contact [Stefano](https://github.com/smoia) in other ways to jump in the development!
 -->

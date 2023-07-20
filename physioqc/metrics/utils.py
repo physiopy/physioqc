@@ -23,11 +23,11 @@ def print_metric_call(metric, args):
     Outcome
         An info-level message for the logger.
     """
-    msg = f'The {metric} regressor will be computed using the following parameters:'
+    msg = f"The {metric} regressor will be computed using the following parameters:"
 
     for arg in args:
-        msg = f'{msg}\n    {arg} = {args[arg]}'
+        msg = f"{msg}\n    {arg} = {args[arg]}"
 
-    msg = f'{msg}\n'
+    msg = f"{msg}\n"
 
     LGR.info(msg)

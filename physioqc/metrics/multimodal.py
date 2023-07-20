@@ -6,10 +6,10 @@ from .. import references
 from ..due import due
 
 
-def std(signal):  
+def std(signal):
     """
     Calculate standard deviation across input channels of signal.
-    
+
     Parameters
     ----------
     std : function
@@ -17,7 +17,7 @@ def std(signal):
     args : signal (X, n) :obj:`numpy.ndarray`
         ND array with signal of some human biometric data, hopefully from a living human.
         signal, of shape (n_channels, )
-        
+
     Returns
     -------
     N-sized array :obj:`numpy.ndarray`
@@ -27,17 +27,17 @@ def std(signal):
     return std_val
 
 
-def tSNR(signal):  
+def tSNR(signal):
     """
     Calculate temporal signal to noise ration of signal.
-    
+
     Parameters
     ----------
     tSNR : function
         Calculate temporal signal to noise ratio.
     args : signal
         ND array with signal of some human biometric data, hopefully from a living human.
-        
+
     Returns
     -------
     N-sized array :obj:`numpy.ndarray`
@@ -47,4 +47,3 @@ def tSNR(signal):
     std = np.std(signal, axis=0)
     tSNR_val = me / std
     return tSNR_val
-    

@@ -1,5 +1,3 @@
 """Metrics derived from physiological signals."""
 
-__all__ = [
-
-]
+__all__ = []
