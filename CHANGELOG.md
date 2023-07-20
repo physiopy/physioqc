@@ -1,3 +1,16 @@
+# 0.2.0 (Thu Jul 20 2023)
+
+#### 🚀 Enhancement
+
+- Add modality-agnostic and peak-related metrics [#3](https://github.com/physiopy/physioqc/pull/3) ([@SRSteinkamp](https://github.com/SRSteinkamp) [@smoia](https://github.com/smoia))
+
+#### Authors: 2
+
+- Simon Steinkamp ([@SRSteinkamp](https://github.com/SRSteinkamp))
+- Stefano Moia ([@smoia](https://github.com/smoia))
+
+---
+
 # 0.1.1 (Thu Jul 20 2023)
 
 #### 🐛 Bug Fix
