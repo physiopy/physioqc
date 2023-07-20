@@ -111,45 +111,38 @@ def metric_dictionary(signal: np.array, perc: List = [5, 95]):
     return metric_dict
 
 
-def peak_distance(ph: pk.Physio, perc: List = [5, 95]):
-    """Calculates the timing between peaks and returns a dictionary containing
-    diferent metrics.
+def peak_distance(ph: pk.Physio):
+    """Calculates the time between peaks (first derivative of onsets).
 
     Parameters
     ----------
     ph : pk.Physio
         A pk.Physio object, that contains peak information.
-    perc : List, optional
-        Percentiles to calculate, by default [5, 95]
 
     Returns
     -------
-    Dict
-        A metric_dictionarys
+    np.array
+        np.array of shape [npeaks, ]
     """
 
     # TODO Check if peaks have been estimated.
     diff_peak = np.diff(ph.peaks, axis=0)
 
-    metric_dict = metric_dictionary(diff_peak, perc=perc)
-
-    return metric_dict
+    return diff_peak
 
 
-def peak_amplitude(ph: pk.Physio, perc: List = [5, 95]):
-    """Calculates different metrics for the amplitude of peaks (peak - trough).
+def peak_amplitude(ph: pk.Physio):
+    """Returns the amplitude for each peak in the ph.Physio object (peak - trough).
 
     Parameters
     ----------
     ph : pk.Physio
         pk.Physio object with peak and trough information.
-    perc : List, optional
-        Percentiles to calculate, by default [5, 95]
 
     Returns
     -------
-    Dict
-        A metric dictionary
+    np.array
+        np.array of shape [npeaks - 1, ]
     """
 
     # TODO Check if peaks have been estimated.
@@ -158,6 +151,4 @@ def peak_amplitude(ph: pk.Physio, perc: List = [5, 95]):
     trough_amp = ph.data[ph.troughs]
     peak_amplitude = peak_amp - trough_amp
 
-    metric_dict = metric_dictionary(peak_amplitude, perc=perc)
-
-    return metric_dict
+    return peak_amplitude
