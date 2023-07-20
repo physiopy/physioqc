@@ -1,6 +1,8 @@
 """These functions compute various non-modality dependent signal processing metrics."""
 import numpy as np
 import peakdet as pk
+from scipy import signal
+from scipy.misc import derivative
 
 from .utils import physio_or_numpy
 
@@ -230,3 +232,135 @@ def peak_amplitude(ph: pk.Physio):
     peak_amplitude = peak_amp - trough_amp
 
     return peak_amplitude
+
+
+def power_spectrum(data):
+    """
+    Compute the power spectrum of the signal.
+
+    Parameters
+    ----------
+    args : data
+        a peakdet Physio object
+
+    Returns
+    -------
+    tuple :obj: tuple
+        A tuple containing as the first element the frequencies and the second element
+        the power spectrum
+    """
+    freqs, psd = signal.welch(data.data, data.fs)
+
+    return freqs, psd
+
+
+def energy(data, lowf=None, highf=None):
+    """
+    Calculate the energy in a certain frequency band.
+
+    Parameters
+    ----------
+    args : data
+        a peakdet Physio object
+    args : lowf
+        float that corresponds to the lower frequency band limit
+    args : highf
+        float that corresponds to the higher frequency band limit
+
+    Returns
+    -------
+    Float :obj:`numpy.ndarray`
+        Energy in the defined frequency band
+    """
+    freqs, psd = power_spectrum(data)
+
+    # Energy is defined as the square of the power spectral density
+    energy_density = np.square(psd)
+
+    if lowf is None or highf is None:
+        # If frequencies are not precised, compute the total power
+        idx_band = np.ones(psd.shape)
+    else:
+        # Define frequency band
+        idx_band = np.logical_and(freqs >= lowf, freqs <= highf)
+
+    energy = np.sum(energy_density[idx_band])
+
+    return energy
+
+
+def fALFF(data, lowf, highf):
+    """
+    Calculate the fractional amplitude of low-frequency fluctuations (fALFF).
+
+    fALLF corresponds to the ratio of the energy in a frequency band over the
+    total energy.
+
+    Parameters
+    ----------
+    args : data
+        a peakdet Physio object
+    args : lowf
+        float that corresponds to the lower frequency band limit
+    args : highf
+        float that corresponds to the higher frequency band limit
+
+    Returns
+    -------
+    Float :obj:`numpy.ndarray`
+        fALFF
+    """
+    # Extract energy in the frequency band
+    band_energy = energy(data.data, lowf=lowf, highf=highf)
+
+    # Extract total energy
+    total_energy = energy(data.data)
+
+    # Compute the relative energy
+    rel_energy = band_energy / total_energy
+
+    return rel_energy
+
+
+def freq_energy(data, thr):
+    """
+    Compute the minimum frequency with energy higher than the threshold.
+
+    Parameters
+    ----------
+    args : data
+        a peakdet Physio object
+    args : thr
+        Power threshold
+
+    Returns
+    -------
+    Float :obj:`numpy.ndarray`
+        Minimum frequency with power higher than the threshold
+    """
+    energy_nd = energy(data.data)
+    freq = np.argmax(energy_nd > thr)
+
+    return freq
+
+
+def smoothness(data):
+    """
+    Compute smoothness as the second derivative of the signal.
+
+    Parameters
+    ----------
+    args : data
+        a peakdet Physio object
+
+    Returns
+    -------
+    Float :obj:`numpy.ndarray`
+        Smoothness
+    """
+    time = np.arange(0, len(data.data) / data.fs, 1 / data.fs)
+    dx2 = np.empty(len(time))
+    for t in time:
+        dx2[t] = derivative(data.data, t, n=2)
+
+    return smoothness
