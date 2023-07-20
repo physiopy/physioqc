@@ -185,38 +185,6 @@ def peak_detection(
     return ph
 
 
-def metric_dictionary(signal: np.array, perc: List = [5, 95]):
-    """Creates a dictionary which contains statistics for a given signal.
-    These include, mean, std, percentiles (in q), min, max.
-
-    Parameters
-    ----------
-    signal : np.array
-        Np.array containing the signal of size [nsamples, ]
-    perc : List, optional
-        Percentiles to compute from signal, by default [5, 95]
-
-    Returns
-    -------
-    dict
-        Dictionary with the different metrics.
-    """
-
-    metric_dict = {}
-
-    metric_dict["mean"] = np.mean(signal, axis=0)
-
-    metric_dict["std"] = np.std(signal, axis=0)
-
-    for ii in perc:
-        metric_dict[f"perc_{ii}"] = np.percentile(signal, q=ii, axis=0)
-
-    metric_dict["max"] = np.max(signal, axis=0)
-    metric_dict["min"] = np.min(signal, axis=0)
-
-    return metric_dict
-
-
 def peak_distance(ph: pk.Physio):
     """Calculates the time between peaks (first derivative of onsets).
 
