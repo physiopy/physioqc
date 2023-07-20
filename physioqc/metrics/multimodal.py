@@ -54,10 +54,6 @@ def tSNR(signal):
 
 def peak_detection(
     data: pk.Physio,
-    target_fs: float = 40.0,
-    filter_cutoff: float = 2.0,
-    filter_method: str = "lowpass",
-    filter_order: int = 7,
     peak_threshold: float = 0.1,
     peak_dist: int = 60,
 ):
@@ -68,14 +64,6 @@ def peak_detection(
     ----------
     data : pk.Physio
         A peakdet Physio object
-    target_fs : float, optional
-        Sampling rate for interpolation, by default 40.0
-    filter_cutoff : float, optional
-        Filter cutoff for filtering step, by default 2.0
-    filter_method : str, optional
-        Filter for filtering step, by default "lowpass"
-    filter_order : int, optional
-        Filter order for filtering step, by default 7
     peak_threshold : float, optional
         Threshold for peak detection, by default 0.1
     peak_dist : int, optional
@@ -86,13 +74,7 @@ def peak_detection(
     pk.Physio
         Updated pk.Physio class with peaks etc.
     """
-    # Downsample the signal - we don't need more than 40 Hz with our MRI data sampling
-    ph = pk.operations.interpolate_physio(data, target_fs, kind="linear")
-    # Apply a lowpass filter to remove the extreme high frequencies
-    ph = pk.operations.filter_physio(
-        ph, filter_cutoff, method=filter_method, order=filter_order
-    )
-    ph = pk.operations.peakfind_physio(ph, thresh=peak_threshold, dist=peak_dist)
+    ph = pk.operations.peakfind_physio(data, thresh=peak_threshold, dist=peak_dist)
 
     return ph
 
