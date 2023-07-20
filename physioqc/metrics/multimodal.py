@@ -1,12 +1,8 @@
-"""These functions compute RETROICOR regressors (Glover et al. 2000)."""
-# import file
-from typing import List
-
+"""These functions compute various non-modality dependent signal processing metrics."""
 import numpy as np
 import peakdet as pk
 
-from .. import references
-from ..due import due
+from .utils import physio_or_numpy
 
 
 def std(signal):
@@ -15,41 +11,17 @@ def std(signal):
 
     Parameters
     ----------
-    std : function
-        Calculate standard deviation across input channels.
-    args : signal (X, n) :obj:`numpy.ndarray`
-        ND array with signal of some human biometric data, hopefully from a living human.
-        signal, of shape (n_channels, )
+    signal : np.array
+        Physiological data
 
     Returns
     -------
     N-sized array :obj:`numpy.ndarray`
         Standard deviation of signal.
     """
+    signal = physio_or_numpy(signal)
     std_val = np.std(signal, axis=0)
     return std_val
-
-
-def tSNR(signal):
-    """
-    Calculate temporal signal to noise ration of signal.
-
-    Parameters
-    ----------
-    tSNR : function
-        Calculate temporal signal to noise ratio.
-    args : signal
-        ND array with signal of some human biometric data, hopefully from a living human.
-
-    Returns
-    -------
-    N-sized array :obj:`numpy.ndarray`
-        Temporal signal to noise ratio of signal.
-    """
-    me = np.mean(signal, axis=0)
-    std = np.std(signal, axis=0)
-    tSNR_val = me / std
-    return tSNR_val
 
 
 def mean(signal: np.array):
@@ -58,19 +30,55 @@ def mean(signal: np.array):
 
     Parameters
     ----------
-    mean : function
-        Calculate mean over input channels.
-    args : signal (X, n) :obj:`numpy.ndarray`
-        ND array with signal of some human biometric data, hopefully from a living human.
-        signal, of shape (n_channels, )
+    signal : np.array
+        Physiological data
 
     Returns
     -------
     N-sized array :obj:`numpy.ndarray`
         Mean of signal.
     """
+    signal = physio_or_numpy(signal)
     mean_val = np.mean(signal, axis=0)
     return mean_val
+
+
+def tSNR(signal):
+    """
+    Calculate temporal signal to noise ratio of signal.
+
+    Parameters
+    ----------
+    signal : np.array
+        Physiological data
+
+    Returns
+    -------
+    N-sized array :obj:`numpy.ndarray`
+        Temporal signal to noise ratio of signal.
+    """
+    signal = physio_or_numpy(signal)
+    tSNR_val = np.mean(signal, axis=0) / np.std(signal, axis=0)
+    return tSNR_val
+
+
+def CoV(signal):
+    """
+    Calculate coefficient of variation of signal.
+
+    Parameters
+    ----------
+    signal : np.array
+        Physiological data
+
+    Returns
+    -------
+    N-sized array :obj:`numpy.ndarray`
+        Temporal signal to noise ratio of signal.
+    """
+    signal = physio_or_numpy(signal)
+    tSNR_val = np.std(signal, axis=0) / np.mean(signal, axis=0)
+    return tSNR_val
 
 
 def min(signal: np.array):
@@ -79,17 +87,15 @@ def min(signal: np.array):
 
     Parameters
     ----------
-    min : function
-        Calculate min over input channels.
-    args : signal (X, n) :obj:`numpy.ndarray`
-        ND array with signal of some human biometric data, hopefully from a living human.
-        signal, of shape (n_channels, )
+    signal : np.array
+        Physiological data
 
     Returns
     -------
     N-sized array :obj:`numpy.ndarray`
         min of signal.
     """
+    signal = physio_or_numpy(signal)
     min_val = np.min(signal, axis=0)
     return min_val
 
@@ -100,23 +106,21 @@ def max(signal: np.array):
 
     Parameters
     ----------
-    max : function
-        Calculate max over input channels.
-    args : signal (X, n) :obj:`numpy.ndarray`
-        ND array with signal of some human biometric data, hopefully from a living human.
-        signal, of shape (n_channels, )
+    signal : np.array
+        Physiological data
 
     Returns
     -------
     N-sized array :obj:`numpy.ndarray`
         max of signal.
     """
+    signal = physio_or_numpy(signal)
     max_val = np.max(signal, axis=0)
     return max_val
 
 
 def iqr(signal: np.array, q_high: float = 75, q_low: float = 25):
-    """Calculates the Inter Quantile Range (IQR) over the input signal.
+    """Calculate the Inter Quantile Range (IQR) over the input signal.
 
     Parameters
     ----------
@@ -132,6 +136,7 @@ def iqr(signal: np.array, q_high: float = 75, q_low: float = 25):
     np.array
         iqr of the signal
     """
+    signal = physio_or_numpy(signal)
     p_high, p_low = np.percentile(signal, [q_high, q_low], axis=0)
     iqr_val = p_high - p_low
 
@@ -139,7 +144,7 @@ def iqr(signal: np.array, q_high: float = 75, q_low: float = 25):
 
 
 def percentile(signal: np.array, perc: float = 2):
-    """Calculates the percentile perc over the signal.
+    """Calculate the percentile perc over the signal.
 
     Parameters
     ----------
@@ -153,6 +158,7 @@ def percentile(signal: np.array, perc: float = 2):
     np.array
         percentile of the signal
     """
+    signal = physio_or_numpy(signal)
     perc_val = np.percentile(signal, axis=0, q=perc)
 
     return perc_val
@@ -186,7 +192,7 @@ def peak_detection(
 
 
 def peak_distance(ph: pk.Physio):
-    """Calculates the time between peaks (first derivative of onsets).
+    """Calculate the time between peaks (first derivative of onsets).
 
     Parameters
     ----------
@@ -198,7 +204,6 @@ def peak_distance(ph: pk.Physio):
     np.array
         np.array of shape [npeaks, ]
     """
-
     # TODO Check if peaks have been estimated.
     diff_peak = np.diff(ph.peaks, axis=0)
 
@@ -206,7 +211,7 @@ def peak_distance(ph: pk.Physio):
 
 
 def peak_amplitude(ph: pk.Physio):
-    """Returns the amplitude for each peak in the ph.Physio object (peak - trough).
+    """Return the amplitude for each peak in the ph.Physio object (peak - trough).
 
     Parameters
     ----------
@@ -218,7 +223,6 @@ def peak_amplitude(ph: pk.Physio):
     np.array
         np.array of shape [npeaks - 1, ]
     """
-
     # TODO Check if peaks have been estimated.
     # Assuming that peaks and troughs are aligned. Last peak has no trough.
     peak_amp = ph.data[ph.peaks[:-1]]
