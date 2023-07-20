@@ -1,8 +1,6 @@
 """Miscellaneous utility functions for metric calculation."""
 import logging
 
-import numpy as np
-
 LGR = logging.getLogger(__name__)
 LGR.setLevel(logging.INFO)
 
@@ -31,3 +29,23 @@ def print_metric_call(metric, args):
     msg = f"{msg}\n"
 
     LGR.info(msg)
+
+
+def physio_or_numpy(signal):
+    """
+    Return data from a peakdet.physio.Physio object or a np.ndarray-like object.
+
+    Parameters
+    ----------
+    data : peakdet.physio.Physio, np.ndarray, or list
+        object to get data from
+
+    Returns
+    -------
+    np.ndarray-like object
+        Either a np.ndarray or a list
+    """
+    if hasattr(signal, "history"):
+        signal = signal.data
+
+    return signal
