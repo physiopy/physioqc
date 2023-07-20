@@ -52,6 +52,27 @@ def tSNR(signal):
     return tSNR_val
 
 
+def mean(signal: np.array):
+    """
+    Calculate mean across input channels of signal.
+
+    Parameters
+    ----------
+    mean : function
+        Calculate mean over input channels.
+    args : signal (X, n) :obj:`numpy.ndarray`
+        ND array with signal of some human biometric data, hopefully from a living human.
+        signal, of shape (n_channels, )
+
+    Returns
+    -------
+    N-sized array :obj:`numpy.ndarray`
+        Mean of signal.
+    """
+    mean_val = np.mean(signal, axis=0)
+    return mean_val
+
+
 def peak_detection(
     data: pk.Physio,
     peak_threshold: float = 0.1,
