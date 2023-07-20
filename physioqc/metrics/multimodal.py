@@ -94,6 +94,27 @@ def min(signal: np.array):
     return min_val
 
 
+def max(signal: np.array):
+    """
+    Calculate max across input channels of signal.
+
+    Parameters
+    ----------
+    max : function
+        Calculate max over input channels.
+    args : signal (X, n) :obj:`numpy.ndarray`
+        ND array with signal of some human biometric data, hopefully from a living human.
+        signal, of shape (n_channels, )
+
+    Returns
+    -------
+    N-sized array :obj:`numpy.ndarray`
+        max of signal.
+    """
+    max_val = np.max(signal, axis=0)
+    return max_val
+
+
 def peak_detection(
     data: pk.Physio,
     peak_threshold: float = 0.1,
