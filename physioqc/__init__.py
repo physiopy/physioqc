@@ -3,7 +3,6 @@
 import pkgutil
 
 from ._version import get_versions
-from .operations import graph, laplacian, metrics, nifti, surrogates, timeseries
 
 SKIP_MODULES = ["tests"]
 
