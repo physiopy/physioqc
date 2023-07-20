@@ -1,3 +1,20 @@
+# 0.3.0 (Thu Jul 20 2023)
+
+:tada: This release contains work from a new contributor! :tada:
+
+Thank you, null[@celprov](https://github.com/celprov), for all your work!
+
+#### 🚀 Enhancement
+
+- Implement power metric and smoothness based metrics [#4](https://github.com/physiopy/physioqc/pull/4) ([@smoia](https://github.com/smoia) [@celprov](https://github.com/celprov))
+
+#### Authors: 2
+
+- [@celprov](https://github.com/celprov)
+- Stefano Moia ([@smoia](https://github.com/smoia))
+
+---
+
 # 0.2.0 (Thu Jul 20 2023)
 
 #### 🚀 Enhancement
