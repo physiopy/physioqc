@@ -169,7 +169,7 @@ def percentile(signal: np.array, perc: float = 2):
 def peak_detection(
     data: pk.Physio,
     peak_threshold: float = 0.1,
-    peak_dist: int = 60,
+    peak_dist: float = 60.0,
 ):
     """
     Perform peak detection for further metric extraction and plotting.
@@ -180,8 +180,8 @@ def peak_detection(
         A peakdet Physio object
     peak_threshold : float, optional
         Threshold for peak detection, by default 0.1
-    peak_dist : int, optional
-        Distance for peak detection, by default 60
+    peak_dist : float, optional
+        Distance for peak detection, by default 60.0
 
     Returns
     -------
