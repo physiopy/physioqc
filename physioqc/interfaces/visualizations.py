@@ -1,4 +1,4 @@
-from typing import List, Literal
+from typing import List, Literal, Tuple
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -9,7 +9,7 @@ from ..metrics import multimodal
 
 def check_create_figure(
     ax: plt.axes = None, figsize=(10, 5)
-) -> List[plt.figure, plt.axes]:
+) -> Tuple[plt.figure, plt.axes]:
     """Helper function to check if a new figure should be created or to further
     plot on axes.
 
@@ -22,7 +22,7 @@ def check_create_figure(
 
     Returns
     -------
-    List[plt.figure, plt.axes]
+    Tuple[plt.figure, plt.axes]
         Figure and axes objects of the plot.
     """
 
@@ -34,7 +34,7 @@ def check_create_figure(
     return fig, ax
 
 
-def plot_raw_data(phys: pk.Physio, ax: plt.axes = None) -> List[plt.figure, plt.axes]:
+def plot_raw_data(phys: pk.Physio, ax: plt.axes = None) -> Tuple[plt.figure, plt.axes]:
     """Plots the raw data using peakdet.
     Parameters
     ----------
@@ -45,7 +45,7 @@ def plot_raw_data(phys: pk.Physio, ax: plt.axes = None) -> List[plt.figure, plt.
 
     Returns
     -------
-    List[plt.figure, plt.axes]
+    Tuple[plt.figure, plt.axes]
         Figure and axes objects of the plot.
     """
     fig, ax = check_create_figure(ax, figsize=(7, 5))
@@ -63,7 +63,7 @@ def plot_average_peak(
     peak_thr: float = 0.1,
     plot_mode: Literal["traces", "ci", "auto"] = "auto",
     ax: plt.axes = None,
-) -> List[plt.figure, plt.axes]:
+) -> Tuple[plt.figure, plt.axes]:
     """_summary_
 
     Parameters
@@ -86,7 +86,7 @@ def plot_average_peak(
 
     Returns
     -------
-    List[plt.figure, plt.axes]
+    Tuple[plt.figure, plt.axes]
         Figure and axes objects of the plot.
 
     Raises
@@ -147,7 +147,7 @@ def plot_average_peak(
 
 def plot_power_spectrum(
     phys: pk.Physio, ax: plt.axes = None
-) -> List[plt.figure, plt.axes]:
+) -> Tuple[plt.figure, plt.axes]:
     """Plots the power spectrum of pk.Physio data.
 
     Parameters
@@ -159,7 +159,7 @@ def plot_power_spectrum(
 
     Returns
     -------
-    List[plt.figure, plt.axes]
+    Tuple[plt.figure, plt.axes]
         Figure and axes objects of the plot.
     """
 
@@ -172,7 +172,9 @@ def plot_power_spectrum(
     return fig, ax
 
 
-def plot_histogram(signal: np.array, ax: plt.axes = None) -> List[plt.figure, plt.axes]:
+def plot_histogram(
+    signal: np.array, ax: plt.axes = None
+) -> Tuple[plt.figure, plt.axes]:
     """Plots the power spectrum of pk.Physio data.
 
     Parameters
@@ -184,7 +186,7 @@ def plot_histogram(signal: np.array, ax: plt.axes = None) -> List[plt.figure, pl
 
     Returns
     -------
-    List[plt.figure, plt.axes]
+    Tuple[plt.figure, plt.axes]
         Figure and axes objects of the plot.
     """
 
