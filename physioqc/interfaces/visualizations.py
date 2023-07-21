@@ -175,7 +175,7 @@ def plot_power_spectrum(
 def plot_histogram(
     signal: np.array, ax: plt.axes = None
 ) -> Tuple[plt.figure, plt.axes]:
-    """Plots the power spectrum of pk.Physio data.
+    """Wrapper around matplotlibs histogram function.
 
     Parameters
     ----------
