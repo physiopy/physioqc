@@ -7,19 +7,49 @@ import peakdet as pk
 from ..metrics import multimodal
 
 
-def plot_raw_data(phys: pk.Physio) -> List[plt.figure, plt.axes]:
-    """Plots the raw data using peakdet.
+def check_create_figure(
+    ax: plt.axes = None, figsize=(10, 5)
+) -> List[plt.figure, plt.axes]:
+    """Helper function to check if a new figure should be created or to further
+    plot on axes.
+
     Parameters
     ----------
-    phys : pk.Physio
-        The data object, used for plotting.
+    ax : plt.axes, optional
+        Check is axes object is present, if not creates new figure, by default None
+    figsize : tuple, optional
+        Size of the new figure (if created), by default (10, 5)
 
     Returns
     -------
     List[plt.figure, plt.axes]
         Figure and axes objects of the plot.
     """
-    fig, ax = plt.subplots(1, 1, figsize=(10, 5))
+
+    if ax is None:
+        fig, ax = plt.subplots(1, 1, figsize=figsize)
+    else:
+        fig = None
+
+    return fig, ax
+
+
+def plot_raw_data(phys: pk.Physio, ax: plt.axes = None) -> List[plt.figure, plt.axes]:
+    """Plots the raw data using peakdet.
+    Parameters
+    ----------
+    phys : pk.Physio
+        The data object, used for plotting.
+    ax : plt.axes, optional
+        axes object to use for plotting, by default None
+
+    Returns
+    -------
+    List[plt.figure, plt.axes]
+        Figure and axes objects of the plot.
+    """
+    fig, ax = check_create_figure(ax, figsize=(7, 5))
+
     ax = pk.plot_physio(phys, ax=ax)
 
     return fig, ax
@@ -32,6 +62,7 @@ def plot_average_peak(
     peak_dist: float = 1.0,
     peak_thr: float = 0.1,
     plot_mode: Literal["traces", "ci", "auto"] = "auto",
+    ax: plt.axes = None,
 ) -> List[plt.figure, plt.axes]:
     """_summary_
 
@@ -49,6 +80,9 @@ def plot_average_peak(
         threshold for peak detection, by default 0.1
     plot_mode : Literal["traces", "ci"], optional
         to plot traces or standard deviation around signal, by default 'auto'
+    ax : plt.axes, optional
+        axes object to use for plotting, by default None
+
 
     Returns
     -------
@@ -89,7 +123,7 @@ def plot_average_peak(
     for n, ps in enumerate(peaks):
         peak_array[n, :] = phys.data[ps + window[0] : ps + window[1] + 1]
 
-    fig, ax = plt.subplots(1, 1, figsize=(7, 5))
+    fig, ax = check_create_figure(ax, figsize=(7, 5))
 
     if plot_mode == "auto":
         if len(peaks) > 2_500:
@@ -111,20 +145,25 @@ def plot_average_peak(
     return fig, ax
 
 
-def plot_power_spectrum(phys: pk.Physio) -> List[plt.figure, plt.axes]:
+def plot_power_spectrum(
+    phys: pk.Physio, ax: plt.axes = None
+) -> List[plt.figure, plt.axes]:
     """Plots the power spectrum of pk.Physio data.
 
     Parameters
     ----------
     phys : pk.Physio
         The data object, used for plotting.
+    ax : plt.axes, optional
+        axes object to use for plotting, by default None
 
     Returns
     -------
     List[plt.figure, plt.axes]
         Figure and axes objects of the plot.
     """
-    fig, ax = plt.subplots(1, 1, figsize=(5, 5))
+
+    fig, ax = check_create_figure(ax, figsize=(7, 5))
 
     freqs, psd = multimodal.power_spectrum(phys)
 
