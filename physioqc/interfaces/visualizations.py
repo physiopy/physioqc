@@ -7,7 +7,7 @@ import peakdet as pk
 from ..metrics import multimodal
 
 
-def plot_raw_data(phys: pk.Physio):
+def plot_raw_data(phys: pk.Physio) -> List[plt.figure, plt.axes]:
     """Plots the raw data using peakdet.
     Parameters
     ----------
@@ -16,13 +16,13 @@ def plot_raw_data(phys: pk.Physio):
 
     Returns
     -------
-    typle(fig, axes)
-        Returns the fig and axes object of the plot.
+    List[plt.figure, plt.axes]
+        Figure and axes objects of the plot.
     """
-    fig, axes = plt.subplots(1, 1, figsize=(10, 5))
-    axes = pk.plot_physio(phys, ax=axes)
+    fig, ax = plt.subplots(1, 1, figsize=(10, 5))
+    ax = pk.plot_physio(phys, ax=ax)
 
-    return fig, axes
+    return fig, ax
 
 
 def plot_average_peak(
@@ -89,7 +89,7 @@ def plot_average_peak(
     for n, ps in enumerate(peaks):
         peak_array[n, :] = phys.data[ps + window[0] : ps + window[1] + 1]
 
-    fig, axes = plt.subplots(1, 1, figsize=(7, 5))
+    fig, ax = plt.subplots(1, 1, figsize=(7, 5))
 
     if plot_mode == "auto":
         if len(peaks) > 2_500:
@@ -98,20 +98,20 @@ def plot_average_peak(
             plot_mode = "traces"
 
     pmean = np.mean(peak_array, axis=0)
-    axes.plot(t, pmean)
+    ax.plot(t, pmean)
     if plot_mode == "ci":
         pstd = np.std(peak_array, axis=0)
-        axes.fill_between(t, pmean - pstd, pmean + pstd, alpha=0.5)
+        ax.fill_between(t, pmean - pstd, pmean + pstd, alpha=0.5)
     elif plot_mode == "traces":
-        axes.plot(t, peak_array.T, color=[0.25, 0.25, 0.25], alpha=0.01, zorder=-1)
+        ax.plot(t, peak_array.T, color=[0.25, 0.25, 0.25], alpha=0.01, zorder=-1)
 
-    axes.scatter(0, pmean[t == 0], zorder=2)  # Adding a point for the peak.
-    axes.set(xlabel="t in s", ylabel="Peak height")
+    ax.scatter(0, pmean[t == 0], zorder=2)  # Adding a point for the peak.
+    ax.set(xlabel="t in s", ylabel="Peak height")
 
-    return fig, axes
+    return fig, ax
 
 
-def plot_power_spectrum(phys: pk.Physio):
+def plot_power_spectrum(phys: pk.Physio) -> List[plt.figure, plt.axes]:
     """Plots the power spectrum of pk.Physio data.
 
     Parameters
@@ -121,13 +121,13 @@ def plot_power_spectrum(phys: pk.Physio):
 
     Returns
     -------
-    typle(fig, ax)
-        Returns the fig and axes object of the plot.
+    List[plt.figure, plt.axes]
+        Figure and axes objects of the plot.
     """
-    fig, axes = plt.subplots(1, 1, figsize=(5, 5))
+    fig, ax = plt.subplots(1, 1, figsize=(5, 5))
 
     freqs, psd = multimodal.power_spectrum(phys)
 
-    axes.plot(freqs, psd)
-    axes.set(xlabel="Frequencies", ylabel="V^2/Hz")
-    return fig, axes
+    ax.plot(freqs, psd)
+    ax.set(xlabel="Frequencies", ylabel="V^2/Hz")
+    return fig, ax
