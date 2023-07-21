@@ -170,3 +170,26 @@ def plot_power_spectrum(
     ax.plot(freqs, psd)
     ax.set(xlabel="Frequencies", ylabel="V^2/Hz")
     return fig, ax
+
+
+def plot_histogram(signal: np.array, ax: plt.axes = None) -> List[plt.figure, plt.axes]:
+    """Plots the power spectrum of pk.Physio data.
+
+    Parameters
+    ----------
+    signal : np.array
+        Numpy array for histogram.
+    ax : plt.axes, optional
+        axes object to use for plotting, by default None
+
+    Returns
+    -------
+    List[plt.figure, plt.axes]
+        Figure and axes objects of the plot.
+    """
+
+    fig, ax = check_create_figure(ax, figsize=(7, 5))
+
+    ax.hist(signal)
+
+    return fig, ax
