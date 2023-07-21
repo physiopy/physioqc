@@ -7,6 +7,23 @@ from scipy.misc import derivative
 from .utils import physio_or_numpy
 
 
+def signal(signal):
+    """
+    Wrapper that turns the object into a function for loop
+
+    Parameters
+    ----------
+    signal : np.array or peakdet Physio object
+        Physiological data
+
+    Returns
+    -------
+    signal : np.array or peakdet Physio object
+        Physiological data
+    """
+    return signal
+
+
 def std(signal):
     """
     Calculate standard deviation across input channels of signal.
@@ -289,7 +306,7 @@ def energy(data, lowf=None, highf=None):
     return energy
 
 
-def fALFF(data, lowf, highf):
+def fALFF(data, lowf=0, highf=0.5):
     """
     Calculate the fractional amplitude of low-frequency fluctuations (fALFF).
 
@@ -309,6 +326,10 @@ def fALFF(data, lowf, highf):
     -------
     Float :obj:`numpy.ndarray`
         fALFF
+
+    Note
+    -------
+    The default value of lowf and highf were set randomly. Please update them with more meaningful value
     """
     # Extract energy in the frequency band
     band_energy = energy(data.data, lowf=lowf, highf=highf)
