@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import peakdet as pk
 
+from ..metrics.multimodal import power_spectrum
+
 
 def plot_raw_data(phys: pk.Physio):
     """Plots the raw data using peakdet.
@@ -65,4 +67,26 @@ def plot_average_peak(phys: pk.Physio, window: List = [-3, 3]):
     axes.scatter(0, pmean[t == 0], zorder=2)  # Adding a point for the peak.
     axes.set(xlabel="t in s", ylabel="Mean amplitude")
 
+    return fig, axes
+
+
+def plot_power_spectrum(phys: pk.Physio):
+    """Plots the power spectrum of pk.Physio data.
+
+    Parameters
+    ----------
+    phys : pk.Physio
+        The data object, used for plotting.
+
+    Returns
+    -------
+    typle(fig, ax)
+        Returns the fig and axes object of the plot.
+    """
+    fig, axes = plt.subplots(1, 1, figsize=(5, 5))
+
+    freqs, psd = power_spectrum(phys)
+
+    axes.plot(freqs, psd)
+    axes.set(xlabel="Frequencies", ylabel="V^2/Hz")
     return fig, axes
