@@ -296,7 +296,7 @@ def energy(data, lowf=None, highf=None):
 
     if lowf is None or highf is None:
         # If frequencies are not precised, compute the total power
-        idx_band = np.ones(psd.shape)
+        idx_band = np.ones(psd.shape).astype(bool)
     else:
         # Define frequency band
         idx_band = np.logical_and(freqs >= lowf, freqs <= highf)
@@ -332,10 +332,10 @@ def fALFF(data, lowf=0, highf=0.5):
     The default value of lowf and highf were set randomly. Please update them with more meaningful value
     """
     # Extract energy in the frequency band
-    band_energy = energy(data.data, lowf=lowf, highf=highf)
+    band_energy = energy(data, lowf=lowf, highf=highf)
 
     # Extract total energy
-    total_energy = energy(data.data)
+    total_energy = energy(data)
 
     # Compute the relative energy
     rel_energy = band_energy / total_energy
@@ -343,7 +343,7 @@ def fALFF(data, lowf=0, highf=0.5):
     return rel_energy
 
 
-def freq_energy(data, thr):
+def freq_energy(data, thr=0.5):
     """
     Compute the minimum frequency with energy higher than the threshold.
 
@@ -358,8 +358,12 @@ def freq_energy(data, thr):
     -------
     Float :obj:`numpy.ndarray`
         Minimum frequency with power higher than the threshold
+
+    Note
+    ----
+    The value of the threshold has been selected randomly for now. Please update it with a more meaningful value.
     """
-    energy_nd = energy(data.data)
+    energy_nd = energy(data)
     freq = np.argmax(energy_nd > thr)
 
     return freq
@@ -378,6 +382,10 @@ def smoothness(data):
     -------
     Float :obj:`numpy.ndarray`
         Smoothness
+
+    Note
+    ----
+    This function does not work for now!
     """
     time = np.arange(0, len(data.data) / data.fs, 1 / data.fs)
     dx2 = np.empty(len(time))

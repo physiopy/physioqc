@@ -68,7 +68,7 @@ def physioqc(
     """
     # Define which metrics you want to compute on which physiological signal instance
     metrics = {
-        signal_fct: [fALFF, freq_energy, smoothness],
+        signal_fct: [fALFF, freq_energy],
         peak_distance: [min, max, std, mean],
         peak_amplitude: [min, max, std, mean],
     }
@@ -86,13 +86,13 @@ def physioqc(
     data = pk.Physio(d[idx_0:, 1], fs=10000)
 
     # Compute all the metrics
-    run_metrics(metrics, data)
+    metrics_df = run_metrics(metrics, data)
 
     # Generate figures
     generate_figures(figures, data, outdir)
 
     # Save the metrics in the output folder
-    save_metrics(metrics, outdir)
+    save_metrics(metrics_df, outdir)
 
 
 def _main(argv=None):
