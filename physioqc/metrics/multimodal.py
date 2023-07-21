@@ -13,7 +13,7 @@ def std(signal):
 
     Parameters
     ----------
-    signal : np.array
+    signal : np.array or peakdet Physio object
         Physiological data
 
     Returns
@@ -32,7 +32,7 @@ def mean(signal: np.array):
 
     Parameters
     ----------
-    signal : np.array
+    signal : np.array or peakdet Physio object
         Physiological data
 
     Returns
@@ -51,7 +51,7 @@ def tSNR(signal):
 
     Parameters
     ----------
-    signal : np.array
+    signal : np.array or peakdet Physio object
         Physiological data
 
     Returns
@@ -70,7 +70,7 @@ def CoV(signal):
 
     Parameters
     ----------
-    signal : np.array
+    signal : np.array or peakdet Physio object
         Physiological data
 
     Returns
@@ -89,7 +89,7 @@ def min(signal: np.array):
 
     Parameters
     ----------
-    signal : np.array
+    signal : np.array or peakdet Physio object
         Physiological data
 
     Returns
@@ -108,7 +108,7 @@ def max(signal: np.array):
 
     Parameters
     ----------
-    signal : np.array
+    signal : np.array or peakdet Physio object
         Physiological data
 
     Returns
