@@ -1,4 +1,7 @@
 <!--(https://raw.githubusercontent.com/physiopy/phys2bids/master/docs/_static/physiopy_logo_small.png)-->
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 <a name="readme"></a>
 <img alt="physioQC" src="https://raw.githubusercontent.com/physiopy/phys2bids/master/docs/_static/physiopy_logo_small.png" height="150">
 
@@ -24,7 +27,7 @@ physioQC
 [![Supports python version](https://img.shields.io/pypi/pyversions/physioqc)](https://pypi.org/project/physioqc/)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-0-orange.svg?style=flat)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-0-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ``physioqc`` is a python3 library meant to do something.
@@ -67,7 +70,31 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/neuralkn0t"><img src="https://avatars.githubusercontent.com/u/86740625?v=4?s=100" width="100px;" alt="Neuralkn0t"/><br /><sub><b>Neuralkn0t</b></sub></a><br /><a href="https://github.com/physiopy/physioqc/commits?author=neuralkn0t" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/smoia"><img src="https://avatars.githubusercontent.com/u/35300580?v=4?s=100" width="100px;" alt="Stefano Moia"/><br /><sub><b>Stefano Moia</b></sub></a><br /><a href="https://github.com/physiopy/physioqc/commits?author=smoia" title="Code">💻</a></td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td align="center" size="13px" colspan="7">
+        <img src="https://raw.githubusercontent.com/all-contributors/all-contributors-cli/1b8533af435da9854653492b1327a23a4dbd0a10/assets/logo-small.svg">
+          <a href="https://all-contributors.js.org/docs/en/bot/usage">Add your contributions</a>
+        </img>
+      </td>
+    </tr>
+  </tfoot>
+</table>
 
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 

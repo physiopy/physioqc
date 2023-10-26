@@ -1,0 +1,34 @@
+{
+  "projectName": "physioqc",
+  "projectOwner": "physiopy",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "none",
+  "contributors": [
+    {
+      "login": "neuralkn0t",
+      "name": "Neuralkn0t",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86740625?v=4",
+      "profile": "https://github.com/neuralkn0t",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "smoia",
+      "name": "Stefano Moia",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35300580?v=4",
+      "profile": "https://github.com/smoia",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "linkToUsage": true
+}
