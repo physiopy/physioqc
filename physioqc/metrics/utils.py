@@ -63,7 +63,14 @@ def has_peakfind_physio(signal) -> bool:
     -------
     bool
         Boolean if peakfind_physio is in history.
+
+    Raises
+    ------
+    AttributeError
+        Raises error if object does not have a history attribute.
     """
+    if not hasattr(signal, "history"):
+        raise AttributeError("Signal has to be a Physio object!")
 
     has_peakfind = any(["peakfind_physio" in i for i in signal.history])
 
