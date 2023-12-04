@@ -49,3 +49,22 @@ def physio_or_numpy(signal):
         signal = signal.data
 
     return signal
+
+
+def has_peakfind_physio(signal) -> bool:
+    """Check if "peakfind_physio" is in signal's history.
+
+    Parameters
+    ----------
+    signal : peakdet.physio.Physio
+        Physio object.
+
+    Returns
+    -------
+    bool
+        Boolean if peakfind_physio is in history.
+    """
+
+    has_peakfind = any(["peakfind_physio" in i for i in signal.history])
+
+    return has_peakfind
