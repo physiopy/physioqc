@@ -96,8 +96,8 @@ def CoV(signal):
         Temporal signal to noise ratio of signal.
     """
     signal = physio_or_numpy(signal)
-    tSNR_val = np.std(signal, axis=0) / np.mean(signal, axis=0)
-    return tSNR_val
+    cov_val = np.std(signal, axis=0) / np.mean(signal, axis=0)
+    return cov_val
 
 
 def min(signal: np.array):
@@ -295,7 +295,7 @@ def energy(data, lowf=None, highf=None):
     energy_density = np.square(psd)
 
     if lowf is None or highf is None:
-        # If frequencies are not precised, compute the total power
+        # If frequencies are not defined, compute the total power
         idx_band = np.ones(psd.shape).astype(bool)
     else:
         # Define frequency band
