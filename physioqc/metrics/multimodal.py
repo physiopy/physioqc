@@ -1,10 +1,12 @@
 """These functions compute various non-modality dependent signal processing metrics."""
+import warnings
+
 import numpy as np
 import peakdet as pk
 from scipy import signal
 from scipy.misc import derivative
 
-from .utils import physio_or_numpy
+from .utils import has_peakfind_physio, physio_or_numpy
 
 
 def signal_fct(signal):
@@ -223,7 +225,10 @@ def peak_distance(ph: pk.Physio):
     np.array
         np.array of shape [npeaks, ]
     """
-    # TODO Check if peaks have been estimated.
+    if not has_peakfind_physio(ph):
+        warnings.warn("Peaks not estimated, estimating")
+        ph = peak_detection(ph)
+
     diff_peak = np.diff(ph.peaks, axis=0)
 
     return diff_peak
@@ -242,7 +247,9 @@ def peak_amplitude(ph: pk.Physio):
     np.array
         np.array of shape [npeaks - 1, ]
     """
-    # TODO Check if peaks have been estimated.
+    if not has_peakfind_physio(ph):
+        warnings.warn("Peaks not estimated, estimating")
+        ph = peak_detection(ph)
     # Assuming that peaks and troughs are aligned. Last peak has no trough.
     peak_amp = ph.data[ph.peaks[:-1]]
     trough_amp = ph.data[ph.troughs]
