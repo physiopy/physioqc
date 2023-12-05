@@ -367,29 +367,3 @@ def freq_energy(data, thr=0.5):
     freq = np.argmax(energy_nd > thr)
 
     return freq
-
-
-def smoothness(data):
-    """
-    Compute smoothness as the second derivative of the signal.
-
-    Parameters
-    ----------
-    args : data
-        a peakdet Physio object
-
-    Returns
-    -------
-    Float :obj:`numpy.ndarray`
-        Smoothness
-
-    Note
-    ----
-    This function does not work for now!
-    """
-    time = np.arange(0, len(data.data) / data.fs, 1 / data.fs)
-    dx2 = np.empty(len(time))
-    for t in time:
-        dx2[t] = derivative(data.data, t, n=2)
-
-    return smoothness

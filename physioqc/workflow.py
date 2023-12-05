@@ -22,7 +22,6 @@ from physioqc.metrics.multimodal import (
     peak_amplitude,
     peak_distance,
     signal_fct,
-    smoothness,
     std,
 )
 
