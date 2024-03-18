@@ -1,4 +1,5 @@
 """These functions compute various non-modality dependent signal processing metrics."""
+
 import numpy as np
 import peakdet as pk
 from scipy import signal
