@@ -1,4 +1,5 @@
 """Denoising metrics for gas recordings."""
+
 import numpy as np
 
 from .. import references
