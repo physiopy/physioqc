@@ -16,7 +16,7 @@ def check_create_figure(
     Parameters
     ----------
     ax : plt.axes, optional
-        Check is axes object is present, if not creates new figure, by default None
+        Check if axes object is present, if not creates new figure, by default None
     figsize : tuple, optional
         Size of the new figure (if created), by default (10, 5)
 
@@ -64,7 +64,9 @@ def plot_average_peak(
     plot_mode: Literal["traces", "ci", "auto"] = "auto",
     ax: plt.axes = None,
 ) -> Tuple[plt.figure, plt.axes]:
-    """_summary_
+    """Plots peaks and their surroundings (defined by the window size). Depending
+    on the setting, plotting traces or the confidence interval (1 SD) around the
+    mean signal.
 
     Parameters
     ----------
@@ -78,8 +80,10 @@ def plot_average_peak(
         distance for peak detection, by default 1.0
     peak_thr : float, optional
         threshold for peak detection, by default 0.1
-    plot_mode : Literal["traces", "ci"], optional
-        to plot traces or standard deviation around signal, by default 'auto'
+    plot_mode : Literal["traces", "ci", "auto"], optional
+        to plot traces or standard deviation around signal, if left on "auto",
+        traces are plotted when there are less than 2_500 detected peaks,
+        otherwise uses the CI, y default 'auto'
     ax : plt.axes, optional
         axes object to use for plotting, by default None
 
