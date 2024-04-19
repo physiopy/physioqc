@@ -1,4 +1,4 @@
-from typing import List, Literal, Tuple
+from typing import List, Literal, Sequence, Tuple
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -177,16 +177,23 @@ def plot_power_spectrum(
 
 
 def plot_histogram(
-    signal: np.array, ax: plt.axes = None
+    signal: np.array,
+    ax: plt.axes = None,
+    bins: int | Sequence[float] | str | None = 10,
 ) -> Tuple[plt.figure, plt.axes]:
-    """Wrapper around matplotlibs histogram function.
+    """
+    Wrapper around matplotlibs histogram function.
 
     Parameters
     ----------
     signal : np.array
         Numpy array for histogram.
     ax : plt.axes, optional
-        axes object to use for plotting, by default None
+        axes object to use for plotting, by default 10
+    bins : int | Sequence[float] | str | None, optional
+        If bins is an integer, defines the number of bins, if a Sequence defines
+        the bin edges. See the matplotlib.pyplot.hist documentation for more details,
+        by default 10
 
     Returns
     -------
@@ -196,6 +203,6 @@ def plot_histogram(
 
     fig, ax = check_create_figure(ax, figsize=(7, 5))
 
-    ax.hist(signal)
+    ax.hist(signal, bins=bins)
 
     return fig, ax
