@@ -172,7 +172,7 @@ def plot_power_spectrum(
     freqs, psd = multimodal.power_spectrum(phys)
 
     ax.plot(freqs, psd)
-    ax.set(xlabel="Frequencies", ylabel="V^2/Hz")
+    ax.set(xlabel="Frequencies", ylabel="a.u.")
     return fig, ax
 
 
