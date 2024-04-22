@@ -75,7 +75,8 @@ def plot_average_peak(
     window : List, optional
         window size around the peak in s, by default [-3, 3]
     target_fs : float, optional
-        sampling rate for plotting and peak detection, by default 1000.0
+        sampling rate for plotting and peak detection, by default 1000.0, only
+        applied if signal sampling rate is larger than target sampling rate.
     peak_dist : float, optional
         distance for peak detection, by default 1.0
     peak_thr : float, optional
@@ -101,9 +102,11 @@ def plot_average_peak(
     if plot_mode not in ["traces", "ci", "auto"]:
         raise ValueError('Plot mode has to be in ["traces", "ci", "auto"]')
 
-    if phys.fs > 1_000:
+    if phys.fs > target_fs:
         #  This should probably go to the logs, or warning
-        print(f"Fs = {phys.fs} Hz too high, resampling to {target_fs} Hz")
+        print(
+            f"Fs = {phys.fs} Hz is higher than target_fs ({target_fs} Hz), resampling to {target_fs} Hz"
+        )
         phys = pk.operations.interpolate_physio(phys, target_fs, kind="linear")
 
     phys = multimodal.peak_detection(phys, peak_dist=peak_dist, peak_threshold=peak_thr)
@@ -114,7 +117,8 @@ def plot_average_peak(
     window_range = np.arange(window[0], window[1] + 1)
     t = window_range / phys.fs
 
-    # Disregard not used peaks:
+    # Excluding peaks at the very end and beginning, to avoid indexing errors,
+    # i.e. only including peaks where we can extract a full window around it:
     peaks = list(
         filter(
             lambda ps: ((ps + window[0]) >= 0)
