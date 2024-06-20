@@ -1,11 +1,30 @@
 """These functions compute various non-modality dependent signal processing metrics."""
 
+import warnings
+
 import numpy as np
 import peakdet as pk
 from scipy import signal
 from scipy.misc import derivative
 
-from .utils import physio_or_numpy
+from .utils import has_peakfind_physio, physio_or_numpy
+
+
+def signal_fct(signal):
+    """
+    Wrapper that turns the object into a function for loop
+
+    Parameters
+    ----------
+    signal : np.array or peakdet Physio object
+        Physiological data
+
+    Returns
+    -------
+    signal : np.array or peakdet Physio object
+        Physiological data
+    """
+    return signal
 
 
 def std(signal):
@@ -14,7 +33,7 @@ def std(signal):
 
     Parameters
     ----------
-    signal : np.array
+    signal : np.array or peakdet Physio object
         Physiological data
 
     Returns
@@ -33,7 +52,7 @@ def mean(signal: np.array):
 
     Parameters
     ----------
-    signal : np.array
+    signal : np.array or peakdet Physio object
         Physiological data
 
     Returns
@@ -52,7 +71,7 @@ def tSNR(signal):
 
     Parameters
     ----------
-    signal : np.array
+    signal : np.array or peakdet Physio object
         Physiological data
 
     Returns
@@ -71,7 +90,7 @@ def CoV(signal):
 
     Parameters
     ----------
-    signal : np.array
+    signal : np.array or peakdet Physio object
         Physiological data
 
     Returns
@@ -80,8 +99,8 @@ def CoV(signal):
         Temporal signal to noise ratio of signal.
     """
     signal = physio_or_numpy(signal)
-    tSNR_val = np.std(signal, axis=0) / np.mean(signal, axis=0)
-    return tSNR_val
+    cov_val = np.std(signal, axis=0) / np.mean(signal, axis=0)
+    return cov_val
 
 
 def min(signal: np.array):
@@ -90,7 +109,7 @@ def min(signal: np.array):
 
     Parameters
     ----------
-    signal : np.array
+    signal : np.array or peakdet Physio object
         Physiological data
 
     Returns
@@ -109,7 +128,7 @@ def max(signal: np.array):
 
     Parameters
     ----------
-    signal : np.array
+    signal : np.array or peakdet Physio object
         Physiological data
 
     Returns
@@ -207,7 +226,10 @@ def peak_distance(ph: pk.Physio):
     np.array
         np.array of shape [npeaks, ]
     """
-    # TODO Check if peaks have been estimated.
+    if not has_peakfind_physio(ph):
+        warnings.warn("Peaks not estimated, estimating")
+        ph = peak_detection(ph)
+
     diff_peak = np.diff(ph.peaks, axis=0)
 
     return diff_peak
@@ -226,7 +248,9 @@ def peak_amplitude(ph: pk.Physio):
     np.array
         np.array of shape [npeaks - 1, ]
     """
-    # TODO Check if peaks have been estimated.
+    if not has_peakfind_physio(ph):
+        warnings.warn("Peaks not estimated, estimating")
+        ph = peak_detection(ph)
     # Assuming that peaks and troughs are aligned. Last peak has no trough.
     peak_amp = ph.data[ph.peaks[:-1]]
     trough_amp = ph.data[ph.troughs]
@@ -279,8 +303,8 @@ def energy(data, lowf=None, highf=None):
     energy_density = np.square(psd)
 
     if lowf is None or highf is None:
-        # If frequencies are not precised, compute the total power
-        idx_band = np.ones(psd.shape)
+        # If frequencies are not defined, compute the total power
+        idx_band = np.ones(psd.shape).astype(bool)
     else:
         # Define frequency band
         idx_band = np.logical_and(freqs >= lowf, freqs <= highf)
@@ -290,7 +314,7 @@ def energy(data, lowf=None, highf=None):
     return energy
 
 
-def fALFF(data, lowf, highf):
+def fALFF(data, lowf=0, highf=0.5):
     """
     Calculate the fractional amplitude of low-frequency fluctuations (fALFF).
 
@@ -310,12 +334,16 @@ def fALFF(data, lowf, highf):
     -------
     Float :obj:`numpy.ndarray`
         fALFF
+
+    Note
+    -------
+    The default value of lowf and highf were set randomly. Please update them with more meaningful value
     """
     # Extract energy in the frequency band
-    band_energy = energy(data.data, lowf=lowf, highf=highf)
+    band_energy = energy(data, lowf=lowf, highf=highf)
 
     # Extract total energy
-    total_energy = energy(data.data)
+    total_energy = energy(data)
 
     # Compute the relative energy
     rel_energy = band_energy / total_energy
@@ -323,7 +351,7 @@ def fALFF(data, lowf, highf):
     return rel_energy
 
 
-def freq_energy(data, thr):
+def freq_energy(data, thr=0.5):
     """
     Compute the minimum frequency with energy higher than the threshold.
 
@@ -338,30 +366,12 @@ def freq_energy(data, thr):
     -------
     Float :obj:`numpy.ndarray`
         Minimum frequency with power higher than the threshold
+
+    Note
+    ----
+    The value of the threshold has been selected randomly for now. Please update it with a more meaningful value.
     """
-    energy_nd = energy(data.data)
+    energy_nd = energy(data)
     freq = np.argmax(energy_nd > thr)
 
     return freq
-
-
-def smoothness(data):
-    """
-    Compute smoothness as the second derivative of the signal.
-
-    Parameters
-    ----------
-    args : data
-        a peakdet Physio object
-
-    Returns
-    -------
-    Float :obj:`numpy.ndarray`
-        Smoothness
-    """
-    time = np.arange(0, len(data.data) / data.fs, 1 / data.fs)
-    dx2 = np.empty(len(time))
-    for t in time:
-        dx2[t] = derivative(data.data, t, n=2)
-
-    return smoothness
