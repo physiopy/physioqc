@@ -4,6 +4,7 @@ import sys
 
 import numpy as np
 import peakdet as pk
+from nireports.assembler.report import Report
 
 from physioqc.cli.run import _get_parser
 from physioqc.interfaces.interfaces import generate_figures, run_metrics, save_metrics
@@ -24,6 +25,10 @@ from physioqc.metrics.multimodal import (
     signal_fct,
     std,
 )
+
+BOOTSTRAP_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
+
+print("BOOTSTRAP path", BOOTSTRAP_PATH)
 
 
 def save_bash_call(outdir):
@@ -92,6 +97,29 @@ def physioqc(
 
     # Save the metrics in the output folder
     save_metrics(metrics_df, outdir)
+
+    metric_dict = metrics_df.to_dict(orient="list")
+    metric_dict = {i: j for i, j in zip(metric_dict["Metric"], metric_dict["Value"])}
+    metadata = {
+        "about-metadata": {
+            "Metrics": metric_dict,
+            "Version": {"version": "pre functional, Definitely does not work yet ;)"},
+        }
+    }
+
+    filters = {"subject": "01"}
+
+    robj = Report(
+        outdir,
+        "test",
+        reportlets_dir=outdir + "/figures/",
+        bootstrap_file=os.path.join(BOOTSTRAP_PATH, "bootstrap.yml"),
+        metadata=metadata,
+        plugin_meta={},
+        **filters,
+    )
+
+    robj.generate_report()
 
 
 def _main(argv=None):
