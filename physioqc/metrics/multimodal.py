@@ -1,4 +1,5 @@
 """These functions compute various non-modality dependent signal processing metrics."""
+
 import warnings
 
 import numpy as np
