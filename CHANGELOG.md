@@ -1,3 +1,15 @@
+# 0.4.0 (Thu Jun 20 2024)
+
+#### 🚀 Enhancement
+
+- adding basic set of visualizations [#5](https://github.com/physiopy/physioqc/pull/5) ([@SRSteinkamp](https://github.com/SRSteinkamp))
+
+#### Authors: 1
+
+- Simon Steinkamp ([@SRSteinkamp](https://github.com/SRSteinkamp))
+
+---
+
 # 0.3.1 (Thu Jun 20 2024)
 
 #### 🐛 Bug Fix
