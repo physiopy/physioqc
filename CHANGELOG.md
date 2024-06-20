@@ -1,3 +1,25 @@
+# 0.5.0 (Thu Jun 20 2024)
+
+:tada: This release contains work from a new contributor! :tada:
+
+Thank you, null[@celprov](https://github.com/celprov), for all your work!
+
+#### 🚀 Enhancement
+
+- Implementation of the workflow [#11](https://github.com/physiopy/physioqc/pull/11) ([@celprov](https://github.com/celprov) [@SRSteinkamp](https://github.com/SRSteinkamp) [@pre-commit-ci[bot]](https://github.com/pre-commit-ci[bot]))
+
+#### 🏠 Internal
+
+- [pre-commit.ci] pre-commit autoupdate [#19](https://github.com/physiopy/physioqc/pull/19) ([@pre-commit-ci[bot]](https://github.com/pre-commit-ci[bot]))
+
+#### Authors: 3
+
+- [@celprov](https://github.com/celprov)
+- [@pre-commit-ci[bot]](https://github.com/pre-commit-ci[bot])
+- Simon Steinkamp ([@SRSteinkamp](https://github.com/SRSteinkamp))
+
+---
+
 # 0.4.0 (Thu Jun 20 2024)
 
 #### 🚀 Enhancement
