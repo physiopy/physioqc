@@ -1,3 +1,22 @@
+# 0.3.1 (Thu Jun 20 2024)
+
+#### 🐛 Bug Fix
+
+- Fix installation setup [#21](https://github.com/physiopy/physioqc/pull/21) ([@smoia](https://github.com/smoia))
+- Merge remote-tracking branch 'upstream/pre-commit-ci-update-config' into int/config [#12](https://github.com/physiopy/physioqc/pull/12) ([@smoia](https://github.com/smoia))
+
+#### 🏠 Internal
+
+- [pre-commit.ci] pre-commit autoupdate [#15](https://github.com/physiopy/physioqc/pull/15) ([@pre-commit-ci[bot]](https://github.com/pre-commit-ci[bot]))
+- Update contributors and configuration [#13](https://github.com/physiopy/physioqc/pull/13) ([@pre-commit-ci[bot]](https://github.com/pre-commit-ci[bot]) [@smoia](https://github.com/smoia))
+
+#### Authors: 2
+
+- [@pre-commit-ci[bot]](https://github.com/pre-commit-ci[bot])
+- Stefano Moia ([@smoia](https://github.com/smoia))
+
+---
+
 # 0.3.0 (Thu Jul 20 2023)
 
 :tada: This release contains work from a new contributor! :tada:
