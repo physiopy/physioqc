@@ -2,11 +2,19 @@ import os
 
 import matplotlib.pyplot as plt
 import pandas as pd
+from bids import layout
 
 from physioqc.metrics.multimodal import peak_amplitude, peak_detection, peak_distance
 
+# Save pattern as global
+pattern = (
+    "sub-{subject}[_ses-{session}]_task-{task}[_acq-{acquisition}]"
+    + "[_rec-{reconstruction}][_run-{run}][_echo-{echo}]"
+    + "[_desc-{description}]_{suffix}.{extension}"
+)
 
-def generate_figures(figures, data, outdir):
+
+def generate_figures(figures, data, outdir, entities):
     """
     Generates all the figure needed to populate the visual report.
     Save the figures in the 'figures' folder
@@ -17,9 +25,22 @@ def generate_figures(figures, data, outdir):
         A list of functions to run to generate all the figures.
     data : np.array or peakdet Physio object
         Physiological data
+    outdir: str
+        The path to the output directory.
+    entities: dictionary
+        A dictionary of bids entities used to write out the files.
     """
     # Create the output directory if not existing
-    os.makedirs(os.path.join(outdir, "figures"), exist_ok=True)
+    sub_folders = []
+    for k in ["subject", "session"]:
+        if k in entities:
+            sub_folders.append("-".join([k[:3], entities[k]]))
+
+    out_folder = os.path.join(outdir, *sub_folders, "figures")
+    os.makedirs(out_folder, exist_ok=True)
+
+    out_entities = {k: v for k, v in entities.items()}
+    out_entities.update({"description": "", "extension": ".svg"})
 
     for figure in figures:
         # Get the plot name from the name of the function that was ran
@@ -35,21 +56,35 @@ def generate_figures(figures, data, outdir):
             peak_dist = peak_distance(data)
             fig, _ = figure(peak_dist)
 
-            plot_name = "histogram_peak_distance"
+            out_entities["description"] = "histpeakdist"
             # TO IMPLEMENT the subject name should be automatically read when the data are loaded
-            fig.savefig(os.path.join(outdir, "figures", f"sub-01_desc-{plot_name}.svg"))
+            fig.savefig(
+                os.path.join(
+                    out_folder, layout.writing.build_path(out_entities, pattern)
+                )
+            )
 
             # Plot histogram of peak amplitude
             peak_ampl = peak_amplitude(data)
             fig, _ = figure(peak_ampl)
 
-            plot_name = "histogram_peak_distance"
-            fig.savefig(os.path.join(outdir, "figures", f"sub-01_desc-{plot_name}.svg"))
-
+            out_entities["description"] = "histpeakamp"
+            # TO IMPLEMENT the subject name should be automatically read when the data are loaded
+            fig.savefig(
+                os.path.join(
+                    out_folder, layout.writing.build_path(out_entities, pattern)
+                )
+            )
         else:
             fig, _ = figure(data)
             # Save the figure
-            fig.savefig(os.path.join(outdir, "figures", f"sub-01_desc-{plot_name}.svg"))
+            out_entities["description"] = plot_name
+            # TO IMPLEMENT the subject name should be automatically read when the data are loaded
+            fig.savefig(
+                os.path.join(
+                    out_folder, layout.writing.build_path(out_entities, pattern)
+                )
+            )
 
 
 def run_metrics(metrics_dict, data):
@@ -90,7 +125,7 @@ def run_metrics(metrics_dict, data):
     return metrics_df
 
 
-def save_metrics(metrics_df, outdir, to_csv=False):
+def save_metrics(metrics_df, outdir, entities, to_csv=False):
     """
     Save the metrics in the defined output path
 
@@ -109,8 +144,24 @@ def save_metrics(metrics_df, outdir, to_csv=False):
         A dataframe containing the value of each metric
     """
     # TO IMPLEMENT : there may be a bug associated to the next line IsDirectoryError
-    os.makedirs(outdir, exist_ok=True)
+    sub_folders = []
+    for k in ["subject", "session"]:
+        if k in entities:
+            sub_folders.append("-".join([k[:3], entities[k]]))
+
+    out_folder = os.path.join(outdir, *sub_folders)
+    os.makedirs(out_folder, exist_ok=True)
+
+    out_entities = {k: v for k, v in entities.items()}
+
     if to_csv:
-        metrics_df.to_csv(os.path.join(outdir, "metrics.csv"), index=False)
+        out_entities.update({"description": "metrics", "extension": ".csv"})
+        metrics_df.to_csv(
+            os.path.join(out_folder, layout.writing.build_path(out_entities, pattern)),
+            index=False,
+        )
     else:
-        metrics_df.to_json(os.path.join(outdir, "metrics.json"))
+        out_entities.update({"description": "metrics", "extension": ".json"})
+        metrics_df.to_json(
+            os.path.join(out_folder, layout.writing.build_path(out_entities, pattern))
+        )

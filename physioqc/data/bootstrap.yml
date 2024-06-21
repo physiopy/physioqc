@@ -48,8 +48,14 @@ sections:
       max-height: 700px
 - name: Histogram of peak amplitudes
   reportlets:
-  - bids: {datatype: figures, desc: histogram}
+  - bids: {datatype: figures, desc: histpeakamp}
     caption: Histogram of peak amplitudes.
+    style:
+      max-height: 700px
+- name: Histogram of peak distances
+  reportlets:
+  - bids: {datatype: figures, desc: histpeakdist}
+    caption: Histogram of peak distanes.
     style:
       max-height: 700px
 
