@@ -1,5 +1,6 @@
 """Miscellaneous utility functions for metric calculation."""
 
+import functools
 import logging
 
 LGR = logging.getLogger(__name__)
@@ -32,24 +33,29 @@ def print_metric_call(metric, args):
     LGR.info(msg)
 
 
-def physio_or_numpy(signal):
+def physio_or_numpy(func):
     """
-    Return data from a peakdet.physio.Physio object or a np.ndarray-like object.
+    Check if the function input is a Physio object or a np.ndarray-like object.
+
+    The "signal" argument must always be the first one.
 
     Parameters
     ----------
-    data : peakdet.physio.Physio, np.ndarray, or list
-        object to get data from
+    func: function to run the wrapper around
 
     Returns
     -------
-    np.ndarray-like object
-        Either a np.ndarray or a list
+    function
     """
-    if hasattr(signal, "history"):
-        signal = signal.data
 
-    return signal
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        # signal must always be args[0]
+        if hasattr(args[0], "history"):
+            args[0] = args[0].data
+        func(*args, **kwargs)
+
+    return wrapper
 
 
 def has_peakfind_physio(signal) -> bool:
