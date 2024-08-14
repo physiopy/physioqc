@@ -13,9 +13,9 @@ from datetime import datetime
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'physioqc'
-author = 'the {} developers'.format(project)
-copyright = '2019-{}, {}'.format(datetime.now().year, author)
+project = "physioqc"
+author = "the {} developers".format(project)
+copyright = "2019-{}, {}".format(datetime.now().year, author)
 
 # Import project to get version info
 sys.path.insert(0, os.path.abspath(os.path.pardir))
