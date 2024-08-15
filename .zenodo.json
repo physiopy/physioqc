@@ -5,8 +5,17 @@
     "creators":[
         {
             "orcid":"0000-0002-2553-3327",
-            "affiliation":"Medical Imaging Processing Lab, Center for Neuroprosthetics, École Polytechnique Fédérale de Lausanne",
+            "affiliation":"Maastricht University",
             "name":"Stefano Moia"
+        },
+        {
+            "orcid":"0000-0002-1668-9629",
+            "affiliation":"University Hospital of Lausanne",
+            "name":"Céline Provins"
+        },
+        {
+            "orcid":"0000-0002-6437-0700",
+            "name":"Simon Richard Steinkamp"
         }
     ],
     "access_right":"open"
