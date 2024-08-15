@@ -53,7 +53,7 @@ def physio_or_numpy(func):
         # signal must always be args[0]
         if hasattr(args[0], "history"):
             args[0] = args[0].data
-        func(*args, **kwargs)
+        return func(*args, **kwargs)
 
     return wrapper
 
