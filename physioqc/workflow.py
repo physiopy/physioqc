@@ -5,15 +5,15 @@ import sys
 import numpy as np
 import peakdet as pk
 
-from physioqc.cli.run import _get_parser
-from physioqc.interfaces.interfaces import generate_figures, run_metrics, save_metrics
-from physioqc.interfaces.visualizations import (
+from .cli.run import _get_parser
+from .interfaces.interfaces import generate_figures, run_metrics, save_metrics
+from .interfaces.visualizations import (
     plot_average_peak,
     plot_histogram,
     plot_power_spectrum,
     plot_raw_data,
 )
-from physioqc.metrics.multimodal import (
+from .metrics.multimodal import (
     fALFF,
     freq_energy,
     max,

@@ -1,9 +1,8 @@
 import os
 
-import matplotlib.pyplot as plt
 import pandas as pd
 
-from physioqc.metrics.multimodal import peak_amplitude, peak_detection, peak_distance
+from .metrics.multimodal import peak_amplitude, peak_detection, peak_distance
 
 
 def generate_figures(figures, data, outdir):

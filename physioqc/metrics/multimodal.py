@@ -5,7 +5,6 @@ import warnings
 import numpy as np
 import peakdet as pk
 from scipy import signal
-from scipy.misc import derivative
 
 from .utils import has_peakfind_physio, physio_or_numpy
 
