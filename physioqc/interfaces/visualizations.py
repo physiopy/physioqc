@@ -99,7 +99,7 @@ def plot_average_peak(
     Raises
     ------
     ValueError
-        If an inapropriate plot type is chosen.
+        If an inappropriate plot type is chosen.
     """
     if plot_mode not in ["traces", "ci", "auto"]:
         raise ValueError('Plot mode has to be in ["traces", "ci", "auto"]')
