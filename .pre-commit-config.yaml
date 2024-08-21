@@ -32,3 +32,8 @@ repos:
       - id: rst-backticks
       - id: rst-directive-colons
       - id: rst-inline-touching-normal
+- repo: https://github.com/codespell-project/codespell
+  # Configuration for codespell is in setup.cfg
+  rev: v2.2.6
+  hooks:
+  - id: codespell
