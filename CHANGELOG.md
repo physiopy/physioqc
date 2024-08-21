@@ -1,3 +1,19 @@
+# 0.5.1 (Wed Aug 21 2024)
+
+#### 🐛 Bug Fix
+
+- Adopt relative imports instead of absolute [#29](https://github.com/physiopy/physioqc/pull/29) ([@smoia](https://github.com/smoia))
+
+#### 🏠 Internal
+
+- Update contributors [#28](https://github.com/physiopy/physioqc/pull/28) ([@smoia](https://github.com/smoia))
+
+#### Authors: 1
+
+- Stefano Moia ([@smoia](https://github.com/smoia))
+
+---
+
 # 0.5.0 (Thu Jun 20 2024)
 
 :tada: This release contains work from a new contributor! :tada:
