@@ -1,6 +1,6 @@
 {
     "license":"Apache-2.0",
-    "title":"physioqc: A toolbox for physiological data quality control",
+    "title":"physiopy/physioqc: A toolbox for physiological data quality control",
     "upload_type":"software",
     "creators": [
       {

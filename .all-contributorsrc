@@ -11,12 +11,14 @@
   "commitConvention": "none",
   "contributors": [
     {
-      "login": "neuralkn0t",
-      "name": "Neuralkn0t",
-      "avatar_url": "https://avatars.githubusercontent.com/u/86740625?v=4",
-      "profile": "https://github.com/neuralkn0t",
+      "login": "goodalse2019",
+      "name": "Sarah Goodale",
+      "avatar_url": "https://avatars.githubusercontent.com/u/60117796?v=4",
+      "profile": "https://github.com/goodalse2019",
       "contributions": [
-        "code"
+        "eventOrganizing",
+        "ideas",
+        "review"
       ]
     },
     {
@@ -25,7 +27,29 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/35300580?v=4",
       "profile": "https://github.com/smoia",
       "contributions": [
-        "code"
+        "code",
+        "ideas",
+        "infra",
+        "projectManagement"
+      ]
+    },
+    {
+      "login": "me-pic",
+      "name": "Marie-Eve Picard",
+      "avatar_url": "https://avatars.githubusercontent.com/u/77584086?v=4",
+      "profile": "https://github.com/me-pic",
+      "contributions": [
+        "infra"
+      ]
+    },
+    {
+      "login": "celprov",
+      "name": "celprov",
+      "avatar_url": "https://avatars.githubusercontent.com/u/77437752?v=4",
+      "profile": "https://github.com/celprov",
+      "contributions": [
+        "code",
+        "ideas"
       ]
     },
     {
@@ -39,13 +63,21 @@
       ]
     },
     {
-      "login": "celprov",
-      "name": "celprov",
-      "avatar_url": "https://avatars.githubusercontent.com/u/77437752?v=4",
-      "profile": "https://github.com/celprov",
+      "login": "RayStick",
+      "name": "Rachael Stickland",
+      "avatar_url": "https://avatars.githubusercontent.com/u/50215726?v=4",
+      "profile": "https://github.com/RayStick",
       "contributions": [
-        "code",
-        "ideas"
+        "infra"
+      ]
+    },
+    {
+      "login": "neuralkn0t",
+      "name": "Neuralkn0t",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86740625?v=4",
+      "profile": "https://github.com/neuralkn0t",
+      "contributions": [
+        "code"
       ]
     }
   ],
