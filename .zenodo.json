@@ -1,27 +1,123 @@
 {
     "license":"Apache-2.0",
-    "title":"physioqc: A toolbox for physiological data quality control",
+    "title":"physiopy/physioqc: A toolbox for physiological data quality control",
     "upload_type":"software",
-    "creators":[
-        {
-            "orcid":"0000-0002-2553-3327",
-            "affiliation":"Maastricht University",
-            "name":"Stefano Moia"
-        },
-        {
-            "orcid": "0009-0001-2412-7829",
-            "affiliation": "Département de psychologie, Université de Montréal",
-            "name": "Marie-Eve Picard"
-        },
-        {
-            "orcid":"0000-0002-1668-9629",
-            "affiliation":"University Hospital of Lausanne",
-            "name":"Céline Provins"
-        },
-        {
-            "orcid":"0000-0002-6437-0700",
-            "name":"Simon Richard Steinkamp"
+    "creators": [
+      {
+        "affiliations": [
+          {
+            "id": "02vm5rt34",
+            "name": "Vanderbilt University"
+          }
+        ],
+        "person_or_org": {
+          "family_name": "Goodale",
+          "given_name": "Sarah",
+          "identifiers": [
+            {
+              "identifier": "0000-0003-0460-6299",
+              "scheme": "orcid"
+            }
+          ],
+          "name": "Goodale, Sarah",
+          "type": "personal"
         }
+      },
+      {
+        "affiliations": [
+          {
+            "name": "Maastricht University"
+          }
+        ],
+        "person_or_org": {
+          "family_name": "Moia",
+          "given_name": "Stefano",
+          "identifiers": [
+            {
+              "identifier": "0000-0002-2553-3327",
+              "scheme": "orcid"
+            }
+          ],
+          "name": "Moia, Stefano",
+          "type": "personal"
+        }
+      },
+      {
+        "affiliations": [
+          {
+            "name": "Universit\u00e9 de Montr\u00e9al"
+          }
+        ],
+        "person_or_org": {
+          "family_name": "Picard",
+          "given_name": "Marie-\u00c8ve",
+          "identifiers": [
+            {
+              "identifier": "0000-0002-4316-2830",
+              "scheme": "orcid"
+            }
+          ],
+          "name": "Picard, Marie-\u00c8ve",
+          "type": "personal"
+        }
+      },
+      {
+        "affiliations": [
+          {
+            "name": "University Hospital of Lausanne"
+          }
+        ],
+        "person_or_org": {
+          "family_name": "Provins",
+          "given_name": "C\u00e9line",
+          "identifiers": [
+            {
+              "identifier": "0000-0002-1668-9629",
+              "scheme": "orcid"
+            }
+          ],
+          "name": "Provins, C\u00e9line",
+          "type": "personal"
+        }
+      },
+      {
+        "affiliations": [
+          {
+            "name": "Danish Research Centre for Magnetic Resonance"
+          }
+        ],
+        "person_or_org": {
+          "family_name": "Steinkamp",
+          "given_name": "Simon Richard",
+          "identifiers": [
+            {
+              "identifier": "0000-0002-6437-0700",
+              "scheme": "orcid"
+            }
+          ],
+          "name": "Steinkamp, Simon Richard",
+          "type": "personal"
+        }
+      },
+      {
+        "affiliations": [
+          {
+            "name": "Northwestern University"
+          }
+        ],
+        "person_or_org": {
+          "family_name": "Stickland",
+          "given_name": "Rachael",
+          "identifiers": [
+            {
+              "identifier": "0000-0003-3398-4272",
+              "scheme": "orcid"
+            }
+          ],
+          "name": "Stickland, Rachael",
+          "type": "personal"
+        }
+      }
     ],
     "access_right":"open"
 }

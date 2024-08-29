@@ -1,6 +1,6 @@
 <!--(https://raw.githubusercontent.com/physiopy/phys2bids/master/docs/_static/physiopy_logo_small.png)-->
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 <a name="readme"></a>
 <img alt="physioQC" src="https://raw.githubusercontent.com/physiopy/phys2bids/master/docs/_static/physiopy_logo_small.png" height="150">
@@ -73,9 +73,12 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tbody>
     <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/smoia"><img src="https://avatars.githubusercontent.com/u/35300580?v=4?s=100" width="100px;" alt="Stefano Moia"/><br /><sub><b>Stefano Moia</b></sub></a><br /><a href="https://github.com/physiopy/physioqc/commits?author=smoia" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/SRSteinkamp"><img src="https://avatars.githubusercontent.com/u/17494653?v=4?s=100" width="100px;" alt="Simon Steinkamp"/><br /><sub><b>Simon Steinkamp</b></sub></a><br /><a href="https://github.com/physiopy/physioqc/commits?author=SRSteinkamp" title="Code">💻</a> <a href="#ideas-SRSteinkamp" title="Ideas, Planning, & Feedback">🤔</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/goodalse2019"><img src="https://avatars.githubusercontent.com/u/60117796?v=4?s=100" width="100px;" alt="Sarah Goodale"/><br /><sub><b>Sarah Goodale</b></sub></a><br /><a href="#eventOrganizing-goodalse2019" title="Event Organizing">📋</a> <a href="#ideas-goodalse2019" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/physiopy/physioqc/pulls?q=is%3Apr+reviewed-by%3Agoodalse2019" title="Reviewed Pull Requests">👀</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/smoia"><img src="https://avatars.githubusercontent.com/u/35300580?v=4?s=100" width="100px;" alt="Stefano Moia"/><br /><sub><b>Stefano Moia</b></sub></a><br /><a href="https://github.com/physiopy/physioqc/commits?author=smoia" title="Code">💻</a> <a href="#ideas-smoia" title="Ideas, Planning, & Feedback">🤔</a> <a href="#infra-smoia" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#projectManagement-smoia" title="Project Management">📆</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/me-pic"><img src="https://avatars.githubusercontent.com/u/77584086?v=4?s=100" width="100px;" alt="Marie-Eve Picard"/><br /><sub><b>Marie-Eve Picard</b></sub></a><br /><a href="#infra-me-pic" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/celprov"><img src="https://avatars.githubusercontent.com/u/77437752?v=4?s=100" width="100px;" alt="celprov"/><br /><sub><b>celprov</b></sub></a><br /><a href="https://github.com/physiopy/physioqc/commits?author=celprov" title="Code">💻</a> <a href="#ideas-celprov" title="Ideas, Planning, & Feedback">🤔</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/SRSteinkamp"><img src="https://avatars.githubusercontent.com/u/17494653?v=4?s=100" width="100px;" alt="Simon Steinkamp"/><br /><sub><b>Simon Steinkamp</b></sub></a><br /><a href="https://github.com/physiopy/physioqc/commits?author=SRSteinkamp" title="Code">💻</a> <a href="#ideas-SRSteinkamp" title="Ideas, Planning, & Feedback">🤔</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/RayStick"><img src="https://avatars.githubusercontent.com/u/50215726?v=4?s=100" width="100px;" alt="Rachael Stickland"/><br /><sub><b>Rachael Stickland</b></sub></a><br /><a href="#infra-RayStick" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/neuralkn0t"><img src="https://avatars.githubusercontent.com/u/86740625?v=4?s=100" width="100px;" alt="Neuralkn0t"/><br /><sub><b>Neuralkn0t</b></sub></a><br /><a href="https://github.com/physiopy/physioqc/commits?author=neuralkn0t" title="Code">💻</a></td>
     </tr>
   </tbody>
