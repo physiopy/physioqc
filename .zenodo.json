@@ -27,6 +27,18 @@
         "affiliations": [
           {
             "name": "Maastricht University"
+          },
+          {
+            "id": "02s376052",
+            "name": "\u00c9cole Polytechnique F\u00e9d\u00e9rale de Lausanne"
+          },
+          {
+            "id": "01swzsf04",
+            "name": "University of Geneva"
+          },
+          {
+            "id": "01a28zg77",
+            "name": "Basque Center on Cognition, Brain and Language"
           }
         ],
         "person_or_org": {
@@ -102,6 +114,11 @@
       {
         "affiliations": [
           {
+            "id": "035dkdb55",
+            "name": "The Alan Turing Institute"
+          },
+          {
+            "id": "00m6w7z96",
             "name": "Northwestern University"
           }
         ],
