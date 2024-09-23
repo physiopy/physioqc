@@ -11,6 +11,15 @@
   "commitConvention": "none",
   "contributors": [
     {
+      "login": "mathdugre",
+      "name": "Mathieu Dugré",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16450132?v=4",
+      "profile": "https://github.com/mathdugre",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
       "login": "goodalse2019",
       "name": "Sarah Goodale",
       "avatar_url": "https://avatars.githubusercontent.com/u/60117796?v=4",
@@ -39,7 +48,9 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/77584086?v=4",
       "profile": "https://github.com/me-pic",
       "contributions": [
-        "infra"
+        "infra",
+        "review",
+        "bug"
       ]
     },
     {

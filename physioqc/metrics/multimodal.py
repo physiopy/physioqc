@@ -26,6 +26,7 @@ def signal_fct(signal):
     return signal
 
 
+@physio_or_numpy
 def std(signal):
     """
     Calculate standard deviation across input channels of signal.
@@ -40,11 +41,11 @@ def std(signal):
     N-sized array :obj:`numpy.ndarray`
         Standard deviation of signal.
     """
-    signal = physio_or_numpy(signal)
     std_val = np.std(signal, axis=0)
     return std_val
 
 
+@physio_or_numpy
 def mean(signal: np.array):
     """
     Calculate mean across input channels of signal.
@@ -59,11 +60,11 @@ def mean(signal: np.array):
     N-sized array :obj:`numpy.ndarray`
         Mean of signal.
     """
-    signal = physio_or_numpy(signal)
     mean_val = np.mean(signal, axis=0)
     return mean_val
 
 
+@physio_or_numpy
 def tSNR(signal):
     """
     Calculate temporal signal to noise ratio of signal.
@@ -78,11 +79,11 @@ def tSNR(signal):
     N-sized array :obj:`numpy.ndarray`
         Temporal signal to noise ratio of signal.
     """
-    signal = physio_or_numpy(signal)
     tSNR_val = np.mean(signal, axis=0) / np.std(signal, axis=0)
     return tSNR_val
 
 
+@physio_or_numpy
 def CoV(signal):
     """
     Calculate coefficient of variation of signal.
@@ -97,11 +98,11 @@ def CoV(signal):
     N-sized array :obj:`numpy.ndarray`
         Temporal signal to noise ratio of signal.
     """
-    signal = physio_or_numpy(signal)
     cov_val = np.std(signal, axis=0) / np.mean(signal, axis=0)
     return cov_val
 
 
+@physio_or_numpy
 def min(signal: np.array):
     """
     Calculate min across input channels of signal.
@@ -116,11 +117,11 @@ def min(signal: np.array):
     N-sized array :obj:`numpy.ndarray`
         min of signal.
     """
-    signal = physio_or_numpy(signal)
     min_val = np.min(signal, axis=0)
     return min_val
 
 
+@physio_or_numpy
 def max(signal: np.array):
     """
     Calculate max across input channels of signal.
@@ -135,11 +136,11 @@ def max(signal: np.array):
     N-sized array :obj:`numpy.ndarray`
         max of signal.
     """
-    signal = physio_or_numpy(signal)
     max_val = np.max(signal, axis=0)
     return max_val
 
 
+@physio_or_numpy
 def iqr(signal: np.array, q_high: float = 75, q_low: float = 25):
     """Calculate the Inter Quantile Range (IQR) over the input signal.
 
@@ -157,13 +158,13 @@ def iqr(signal: np.array, q_high: float = 75, q_low: float = 25):
     np.array
         iqr of the signal
     """
-    signal = physio_or_numpy(signal)
     p_high, p_low = np.percentile(signal, [q_high, q_low], axis=0)
     iqr_val = p_high - p_low
 
     return iqr_val
 
 
+@physio_or_numpy
 def percentile(signal: np.array, perc: float = 2):
     """Calculate the percentile perc over the signal.
 
@@ -179,7 +180,6 @@ def percentile(signal: np.array, perc: float = 2):
     np.array
         percentile of the signal
     """
-    signal = physio_or_numpy(signal)
     perc_val = np.percentile(signal, axis=0, q=perc)
 
     return perc_val
