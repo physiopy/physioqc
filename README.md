@@ -1,7 +1,4 @@
 <!--(https://raw.githubusercontent.com/physiopy/phys2bids/master/docs/_static/physiopy_logo_small.png)-->
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
 <a name="readme"></a>
 <img alt="physioQC" src="https://raw.githubusercontent.com/physiopy/phys2bids/master/docs/_static/physiopy_logo_small.png" height="150">
 
@@ -27,7 +24,7 @@ physioQC
 [![Supports python version](https://img.shields.io/pypi/pyversions/physioqc)](https://pypi.org/project/physioqc/)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-0-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ``physioqc`` is a python3 library meant to do something.
