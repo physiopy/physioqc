@@ -26,6 +26,25 @@
       {
         "affiliations": [
           {
+            "name": "Concordia University"
+          }
+        ],
+        "person_or_org": {
+          "family_name": "Dugré",
+          "given_name": "Mathieu",
+          "identifiers": [
+            {
+              "identifier": "0000-0003-2828-6031",
+              "scheme": "orcid"
+            }
+          ],
+          "name": "Dugré, Mathieu",
+          "type": "personal"
+        }
+      },
+      {
+        "affiliations": [
+          {
             "name": "Maastricht University"
           },
           {
