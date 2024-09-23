@@ -1,3 +1,16 @@
+# 0.6.0 (Mon Sep 23 2024)
+
+#### 🚀 Enhancement
+
+- Better check functions input, transforming physio_or_numpy function into decorator [#23](https://github.com/physiopy/physioqc/pull/23) ([@smoia](https://github.com/smoia) [@me-pic](https://github.com/me-pic))
+
+#### Authors: 2
+
+- Marie-Eve Picard ([@me-pic](https://github.com/me-pic))
+- Stefano Moia ([@smoia](https://github.com/smoia))
+
+---
+
 # 0.5.2 (Mon Sep 23 2024)
 
 :tada: This release contains work from new contributors! :tada:
