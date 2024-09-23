@@ -9,6 +9,7 @@ from scipy import signal
 from .utils import has_peakfind_physio, physio_or_numpy
 
 
+@physio_or_numpy
 def signal_fct(signal):
     """
     Wrapper that turns the object into a function for loop
