@@ -1,3 +1,43 @@
+# 0.5.2 (Mon Sep 23 2024)
+
+:tada: This release contains work from new contributors! :tada:
+
+Thanks for all your work!
+
+:heart: Marie-Eve Picard ([@me-pic](https://github.com/me-pic))
+
+:heart: Rachael Stickland ([@RayStick](https://github.com/RayStick))
+
+#### 🐛 Bug Fix
+
+- Add missing init file [#36](https://github.com/physiopy/physioqc/pull/36) ([@me-pic](https://github.com/me-pic))
+- Fix readthedocs config file [#25](https://github.com/physiopy/physioqc/pull/25) ([@me-pic](https://github.com/me-pic))
+
+#### ⚠️ Pushed to `master`
+
+- doc: Fix allcontributors badge ([@smoia](https://github.com/smoia))
+
+#### 📝 Documentation
+
+- Update contributors [#31](https://github.com/physiopy/physioqc/pull/31) ([@smoia](https://github.com/smoia))
+- Configure documentation [#27](https://github.com/physiopy/physioqc/pull/27) ([@me-pic](https://github.com/me-pic) [@pre-commit-ci[bot]](https://github.com/pre-commit-ci[bot]))
+
+#### 🏠 Internal
+
+- Update .zenodo.json file to include multiple affiliations [#33](https://github.com/physiopy/physioqc/pull/33) ([@RayStick](https://github.com/RayStick))
+- Add contribution [#30](https://github.com/physiopy/physioqc/pull/30) ([@me-pic](https://github.com/me-pic))
+- [pre-commit.ci] pre-commit autoupdate [#24](https://github.com/physiopy/physioqc/pull/24) ([@pre-commit-ci[bot]](https://github.com/pre-commit-ci[bot]))
+- Add auto-author and auto-label to github workflow [#18](https://github.com/physiopy/physioqc/pull/18) ([@RayStick](https://github.com/RayStick))
+
+#### Authors: 4
+
+- [@pre-commit-ci[bot]](https://github.com/pre-commit-ci[bot])
+- Marie-Eve Picard ([@me-pic](https://github.com/me-pic))
+- Rachael Stickland ([@RayStick](https://github.com/RayStick))
+- Stefano Moia ([@smoia](https://github.com/smoia))
+
+---
+
 # 0.5.1 (Wed Aug 21 2024)
 
 #### 🐛 Bug Fix
