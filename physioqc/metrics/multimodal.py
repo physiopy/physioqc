@@ -3,10 +3,11 @@
 import warnings
 
 import numpy as np
-import peakdet as pk
+from peakdet import Physio
+from peakdet.operations import peakfind_physio
 from scipy import signal
 
-from .utils import has_peakfind_physio, physio_or_numpy
+from .utils import has_peaks, physio_or_numpy
 
 
 @physio_or_numpy
@@ -181,13 +182,13 @@ def percentile(signal: np.array, perc: float = 2):
     np.array
         percentile of the signal
     """
-    perc_val = np.percentile(signal, axis=0, q=perc)
+    perc_val = np.percentile(signal, q=perc, axis=0)
 
     return perc_val
 
 
 def peak_detection(
-    data: pk.Physio,
+    data: Physio,
     peak_threshold: float = 0.1,
     peak_dist: float = 60.0,
 ):
@@ -196,7 +197,7 @@ def peak_detection(
 
     Parameters
     ----------
-    data : pk.Physio
+    data : Physio
         A peakdet Physio object
     peak_threshold : float, optional
         Threshold for peak detection, by default 0.1
@@ -205,52 +206,60 @@ def peak_detection(
 
     Returns
     -------
-    pk.Physio
-        Updated pk.Physio class with peaks etc.
+    Physio
+        Updated Physio class with peaks etc.
     """
-    ph = pk.operations.peakfind_physio(data, thresh=peak_threshold, dist=peak_dist)
+    ph = peakfind_physio(data, thresh=peak_threshold, dist=peak_dist)
 
     return ph
 
 
-def peak_distance(ph: pk.Physio):
-    """Calculate the time between peaks (first derivative of onsets).
+def peak_distance(
+    ph: Physio,
+    peak_threshold: float = 0.1,
+    peak_dist: float = 60.0,
+):
+    """Calculate the time (in seconds) between peaks (first derivative of onsets).
 
     Parameters
     ----------
-    ph : pk.Physio
-        A pk.Physio object, that contains peak information.
+    ph : Physio
+        A Physio object, that contains peak information.
 
     Returns
     -------
     np.array
         np.array of shape [npeaks, ]
     """
-    if not has_peakfind_physio(ph):
+    if not has_peaks(ph):
         warnings.warn("Peaks not estimated, estimating")
-        ph = peak_detection(ph)
+        ph = peakfind_physio(ph, thresh=peak_threshold, dist=peak_dist)
 
-    diff_peak = np.diff(ph.peaks, axis=0)
+    diff_peak = np.diff(ph.peaks, axis=0) / ph.fs
 
     return diff_peak
 
 
-def peak_amplitude(ph: pk.Physio):
+def peak_amplitude(
+    ph: Physio,
+    peak_threshold: float = 0.1,
+    peak_dist: float = 60.0,
+):
     """Return the amplitude for each peak in the ph.Physio object (peak - trough).
 
     Parameters
     ----------
-    ph : pk.Physio
-        pk.Physio object with peak and trough information.
+    ph : Physio
+        Physio object with peak and trough information.
 
     Returns
     -------
     np.array
         np.array of shape [npeaks - 1, ]
     """
-    if not has_peakfind_physio(ph):
+    if not has_peaks(ph):
         warnings.warn("Peaks not estimated, estimating")
-        ph = peak_detection(ph)
+        ph = peakfind_physio(ph, thresh=peak_threshold, dist=peak_dist)
     # Assuming that peaks and troughs are aligned. Last peak has no trough.
     peak_amp = ph.data[ph.peaks[:-1]]
     trough_amp = ph.data[ph.troughs]
