@@ -1,3 +1,15 @@
+# 0.6.1 (Tue Oct 08 2024)
+
+#### ⚠️ Pushed to `master`
+
+- Change things ([@smoia](https://github.com/smoia))
+
+#### Authors: 1
+
+- Stefano Moia ([@smoia](https://github.com/smoia))
+
+---
+
 # 0.6.0 (Mon Sep 23 2024)
 
 #### 🚀 Enhancement
