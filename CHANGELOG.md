@@ -1,3 +1,15 @@
+# 0.8.0 (Tue Oct 08 2024)
+
+#### 🚀 Enhancement
+
+- Add metric to show maximum amplitude in signal (max_amplitude) and rename IQR [#39](https://github.com/physiopy/physioqc/pull/39) ([@smoia](https://github.com/smoia))
+
+#### Authors: 1
+
+- Stefano Moia ([@smoia](https://github.com/smoia))
+
+---
+
 # 0.7.0 (Tue Oct 08 2024)
 
 #### 🚀 Enhancement
