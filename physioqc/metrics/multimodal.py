@@ -43,8 +43,7 @@ def std(signal):
     N-sized array :obj:`numpy.ndarray`
         Standard deviation of signal.
     """
-    std_val = np.std(signal, axis=0)
-    return std_val
+    return np.std(signal, axis=0)
 
 
 @physio_or_numpy
@@ -62,8 +61,7 @@ def mean(signal: np.array):
     N-sized array :obj:`numpy.ndarray`
         Mean of signal.
     """
-    mean_val = np.mean(signal, axis=0)
-    return mean_val
+    return np.mean(signal, axis=0)
 
 
 @physio_or_numpy
@@ -81,8 +79,7 @@ def tSNR(signal):
     N-sized array :obj:`numpy.ndarray`
         Temporal signal to noise ratio of signal.
     """
-    tSNR_val = np.mean(signal, axis=0) / np.std(signal, axis=0)
-    return tSNR_val
+    return np.mean(signal, axis=0) / np.std(signal, axis=0)
 
 
 @physio_or_numpy
@@ -100,8 +97,7 @@ def CoV(signal):
     N-sized array :obj:`numpy.ndarray`
         Temporal signal to noise ratio of signal.
     """
-    cov_val = np.std(signal, axis=0) / np.mean(signal, axis=0)
-    return cov_val
+    return np.std(signal, axis=0) / np.mean(signal, axis=0)
 
 
 @physio_or_numpy
@@ -119,8 +115,7 @@ def min(signal: np.array):
     N-sized array :obj:`numpy.ndarray`
         min of signal.
     """
-    min_val = np.min(signal, axis=0)
-    return min_val
+    return np.min(signal, axis=0)
 
 
 @physio_or_numpy
@@ -138,8 +133,7 @@ def max(signal: np.array):
     N-sized array :obj:`numpy.ndarray`
         max of signal.
     """
-    max_val = np.max(signal, axis=0)
-    return max_val
+    return np.max(signal, axis=0)
 
 
 @physio_or_numpy
@@ -161,9 +155,8 @@ def iqr(signal: np.array, q_high: float = 75, q_low: float = 25):
         iqr of the signal
     """
     p_high, p_low = np.percentile(signal, [q_high, q_low], axis=0)
-    iqr_val = p_high - p_low
 
-    return iqr_val
+    return p_high - p_low
 
 
 @physio_or_numpy
@@ -182,9 +175,7 @@ def percentile(signal: np.array, perc: float = 2):
     np.array
         percentile of the signal
     """
-    perc_val = np.percentile(signal, q=perc, axis=0)
-
-    return perc_val
+    return np.percentile(signal, q=perc, axis=0)
 
 
 def peak_detection(
@@ -209,9 +200,7 @@ def peak_detection(
     Physio
         Updated Physio class with peaks etc.
     """
-    ph = peakfind_physio(data, thresh=peak_threshold, dist=peak_dist)
-
-    return ph
+    return peakfind_physio(data, thresh=peak_threshold, dist=peak_dist)
 
 
 def peak_distance(
@@ -235,9 +224,7 @@ def peak_distance(
         warnings.warn("Peaks not estimated, estimating")
         ph = peakfind_physio(ph, thresh=peak_threshold, dist=peak_dist)
 
-    diff_peak = np.diff(ph.peaks, axis=0) / ph.fs
-
-    return diff_peak
+    return np.diff(ph.peaks, axis=0) / ph.fs
 
 
 def peak_amplitude(
@@ -263,9 +250,7 @@ def peak_amplitude(
     # Assuming that peaks and troughs are aligned. Last peak has no trough.
     peak_amp = ph.data[ph.peaks[:-1]]
     trough_amp = ph.data[ph.troughs]
-    peak_amplitude = peak_amp - trough_amp
-
-    return peak_amplitude
+    return peak_amp - trough_amp
 
 
 def power_spectrum(data):
@@ -318,9 +303,7 @@ def energy(data, lowf=None, highf=None):
         # Define frequency band
         idx_band = np.logical_and(freqs >= lowf, freqs <= highf)
 
-    energy = np.sum(energy_density[idx_band])
-
-    return energy
+    return np.sum(energy_density[idx_band])
 
 
 def fALFF(data, lowf=0, highf=0.5):
@@ -355,9 +338,7 @@ def fALFF(data, lowf=0, highf=0.5):
     total_energy = energy(data)
 
     # Compute the relative energy
-    rel_energy = band_energy / total_energy
-
-    return rel_energy
+    return band_energy / total_energy
 
 
 def freq_energy(data, thr=0.5):
@@ -381,6 +362,4 @@ def freq_energy(data, thr=0.5):
     The value of the threshold has been selected randomly for now. Please update it with a more meaningful value.
     """
     energy_nd = energy(data)
-    freq = np.argmax(energy_nd > thr)
-
-    return freq
+    return np.argmax(energy_nd > thr)
