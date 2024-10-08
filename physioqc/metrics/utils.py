@@ -3,6 +3,8 @@
 import functools
 import logging
 
+from peakdet.physio import Physio
+
 LGR = logging.getLogger(__name__)
 LGR.setLevel(logging.INFO)
 
@@ -58,8 +60,8 @@ def physio_or_numpy(func):
     return wrapper
 
 
-def has_peakfind_physio(signal) -> bool:
-    """Check if "peakfind_physio" is in signal's history.
+def has_peaks(signal: Physio) -> bool:
+    """Check if the signal is a Physio object and has (at least 2) peaks.
 
     Parameters
     ----------
@@ -77,8 +79,9 @@ def has_peakfind_physio(signal) -> bool:
         Raises error if object does not have a history attribute.
     """
     if not hasattr(signal, "history"):
-        raise AttributeError("Signal has to be a Physio object!")
+        raise AttributeError("Signal has to be a peakdet Physio object!")
 
-    has_peakfind = any(["peakfind_physio" in i for i in signal.history])
+    if signal._metadata["peaks"].size == 1:
+        LGR.warn("Signal has only one peak! Better to rerun peak detection.")
 
-    return has_peakfind
+    return signal._metadata["peaks"].size > 1
