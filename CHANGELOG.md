@@ -1,3 +1,22 @@
+# 0.7.0 (Tue Oct 08 2024)
+
+#### 🚀 Enhancement
+
+- Improve peak detection utility and optimize metrics [#40](https://github.com/physiopy/physioqc/pull/40) ([@smoia](https://github.com/smoia))
+
+#### 🏠 Internal
+
+- [pre-commit.ci] pre-commit autoupdate [#38](https://github.com/physiopy/physioqc/pull/38) ([@pre-commit-ci[bot]](https://github.com/pre-commit-ci[bot]))
+- Tune up codespell configuration to skip trough and not modify versioneer file [#20](https://github.com/physiopy/physioqc/pull/20) ([@yarikoptic](https://github.com/yarikoptic) [@pre-commit-ci[bot]](https://github.com/pre-commit-ci[bot]))
+
+#### Authors: 3
+
+- [@pre-commit-ci[bot]](https://github.com/pre-commit-ci[bot])
+- Stefano Moia ([@smoia](https://github.com/smoia))
+- Yaroslav Halchenko ([@yarikoptic](https://github.com/yarikoptic))
+
+---
+
 # 0.6.1 (Tue Oct 08 2024)
 
 #### ⚠️ Pushed to `master`
