@@ -142,7 +142,25 @@ def max(signal: np.array):
 
 
 @physio_or_numpy
-def iqr(signal: np.array, q_high: float = 75, q_low: float = 25):
+def max_amplitude(signal: np.array):
+    """
+    Calculate max across input channels of signal.
+
+    Parameters
+    ----------
+    signal : np.array or peakdet Physio object
+        Physiological data
+
+    Returns
+    -------
+    N-sized array :obj:`numpy.ndarray`
+        max of signal.
+    """
+    return np.max(signal, axis=0) - np.min(signal, axis=0)
+
+
+@physio_or_numpy
+def IQR(signal: np.array, q_high: float = 75, q_low: float = 25):
     """Calculate the Inter Quantile Range (IQR) over the input signal.
 
     Parameters
