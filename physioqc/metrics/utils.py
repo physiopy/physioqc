@@ -52,9 +52,9 @@ def physio_or_numpy(func):
 
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        # signal must always be args[0]
+        # signal/data must always be args[0]
         if hasattr(args[0], "history"):
-            args[0] = args[0].data
+            args = (args[0].data,) + args[1:]
         return func(*args, **kwargs)
 
     return wrapper
