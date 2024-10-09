@@ -1,3 +1,15 @@
+# 0.8.1 (Wed Oct 09 2024)
+
+#### 🐛 Bug Fix
+
+- Fix arguments pass in `physio_or_numpy` wrapper [#41](https://github.com/physiopy/physioqc/pull/41) ([@smoia](https://github.com/smoia))
+
+#### Authors: 1
+
+- Stefano Moia ([@smoia](https://github.com/smoia))
+
+---
+
 # 0.8.0 (Tue Oct 08 2024)
 
 #### 🚀 Enhancement
