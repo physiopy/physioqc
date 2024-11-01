@@ -9,9 +9,8 @@ physioQC
 [![Release date](https://img.shields.io/github/release-date/physiopy/physioqc?style=flat&logo=github)](https://github.com/physiopy/physioqc/releases)
 [![Auto Release](https://img.shields.io/badge/release-auto.svg?style=flat&colorA=888888&colorB=9B065A&label=auto&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAACzElEQVR4AYXBW2iVBQAA4O+/nLlLO9NM7JSXasko2ASZMaKyhRKEDH2ohxHVWy6EiIiiLOgiZG9CtdgG0VNQoJEXRogVgZYylI1skiKVITPTTtnv3M7+v8UvnG3M+r7APLIRxStn69qzqeBBrMYyBDiL4SD0VeFmRwtrkrI5IjP0F7rjzrSjvbTqwubiLZffySrhRrSghBJa8EBYY0NyLJt8bDBOtzbEY72TldQ1kRm6otana8JK3/kzN/3V/NBPU6HsNnNlZAz/ukOalb0RBJKeQnykd7LiX5Fp/YXuQlfUuhXbg8Di5GL9jbXFq/tLa86PpxPhAPrwCYaiorS8L/uuPJh1hZFbcR8mewrx0d7JShr3F7pNW4vX0GRakKWVk7taDq7uPvFWw8YkMcPVb+vfvfRZ1i7zqFwjtmFouL72y6C/0L0Ie3GvaQXRyYVB3YZNE32/+A/D9bVLcRB3yw3hkRCdaDUtFl6Ykr20aaLvKoqIXUdbMj6GFzAmdxfWx9iIRrkDr1f27cFONGMUo/gRI/jNbIMYxJOoR1cY0OGaVPb5z9mlKbyJP/EsdmIXvsFmM7Ql42nEblX3xI1BbYbTkXCqRnxUbgzPo4T7sQBNeBG7zbAiDI8nWfZDhQWYCG4PFr+HMBQ6l5VPJybeRyJXwsdYJ/cRnlJV0yB4ZlUYtFQIkMZnst8fRrPcKezHCblz2IInMIkPzbbyb9mW42nWInc2xmE0y61AJ06oGsXL5rcOK1UdCbEXiVwNXsEy/6+EbaiVG8eeEAfxvaoSBnCH61uOD7BS1Ul8ESHBKWxCrdyd6EYNKihgEVrwOAbQruoytuBYIFfAc3gVN6iawhjKyNCEpYhVJXgbOzARyaU4hCtYizq5EI1YgiUoIlT1B7ZjByqmRWYbwtdYjoWoN7+LOIQefIqKawLzK6ID69GGpQgwhhEcwGGUzfEPAiPqsCXadFsAAAAASUVORK5CYII=)](https://github.com/intuit/auto)
 
-[![See the documentation at: https://physioqc.readthedocs.io](https://img.shields.io/badge/docs-read%20latest-informational?style=flat&logo=readthedocs)](https://physioqc.readthedocs.io/en/latest/?badge=latest)
-<!-- [![Latest DOI](https://zenodo.org/badge/<doi>.svg)](https://zenodo.org/badge/latestdoi/<doi>) -->
-<!-- [![Licensed Apache 2.0](https://img.shields.io/github/license/physiopy/physioqc?style=flat&logo=apache)](https://github.com/physiopy/physioqc/blob/master/LICENSE) -->
+[![Latest DOI](https://zenodo.org/badge/572539484.svg)](https://doi.org/10.5281/zenodo.12176296)
+[![Licensed Apache 2.0](https://img.shields.io/github/license/physiopy/physioqc?style=flat&logo=apache)](https://github.com/physiopy/physioqc/blob/master/LICENSE)
 
 [![Codecov](https://img.shields.io/codecov/c/gh/physiopy/physioqc?style=flat&label=codecov&logo=codecov)](https://codecov.io/gh/physiopy/physioqc)
 [![Build Status](https://img.shields.io/circleci/build/github/physiopy/physioqc?style=flat&label=circleci&logo=circleci)](https://circleci.com/gh/physiopy/physioqc)
@@ -20,16 +19,13 @@ physioQC
 [![Latest version](https://img.shields.io/pypi/v/physioqc?style=flat&logo=pypi&logoColor=white)](https://pypi.org/project/physioqc/)
 [![Supports python version](https://img.shields.io/pypi/pyversions/physioqc?style=flat&logo=python&logoColor=white)](https://pypi.org/project/physioqc/)
 
-[![Auto Release](https://img.shields.io/badge/release-auto.svg?colorA=888888&colorB=9B065A&label=auto)](https://github.com/intuit/auto)
-[![Supports python version](https://img.shields.io/pypi/pyversions/physioqc)](https://pypi.org/project/physioqc/)
-
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-``physioqc`` is a python3 library meant to do something.
+``physioqc`` is a python3 library dedicated to Quality Assessment and Control (QA/QC).
 
-> If you use ``physioqc`` in your work, please support it by citing the zenodo DOI of the version you used. You can find the latest version [here](https://doi.org/10.5281/zenodo.3470091)
+> If you use ``physioqc`` in your work, please support it by citing the zenodo DOI of the version you used. You can find the latest version [here](https://doi.org/10.5281/zenodo.12176296)
 
 > We also support gathering all relevant citations via [DueCredit](http://duecredit.org).
 
