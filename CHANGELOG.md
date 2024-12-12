@@ -1,3 +1,17 @@
+# 0.8.2 (Thu Dec 12 2024)
+
+#### ⚠️ Pushed to `master`
+
+- try to trigger a new zenodo release ([@RayStick](https://github.com/RayStick))
+- docs: Update README.md ([@smoia](https://github.com/smoia))
+
+#### Authors: 2
+
+- Rachael Stickland ([@RayStick](https://github.com/RayStick))
+- Stefano Moia ([@smoia](https://github.com/smoia))
+
+---
+
 # 0.8.1 (Wed Oct 09 2024)
 
 #### 🐛 Bug Fix
