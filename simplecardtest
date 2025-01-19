@@ -6,9 +6,9 @@ import peakdet.io as pk_io
 import physioqc.metrics.cardiac as cardiac
 import physioqc.metrics.utils as utils
 
-samplerate, starttime, columns, data, compression, columnsource = \
-    utils.readbidstsv("testdata/sub-007_ses-05_task-rest_run-01_physio.tsv.gz",
-                      colspec="cardiac")
+samplerate, starttime, columns, data, compression, columnsource = utils.readbidstsv(
+    "testdata/sub-007_ses-05_task-rest_run-01_physio.tsv.gz", colspec="cardiac"
+)
 
 rawcard = np.nan_to_num(data.flatten())
 

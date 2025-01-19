@@ -6,9 +6,10 @@ import peakdet.io as pk_io
 import physioqc.metrics.chest_belt as chest_belt
 import physioqc.metrics.utils as utils
 
-samplerate, starttime, columns, data, compression, columnsource = \
-    utils.readbidstsv("testdata/sub-007_ses-05_task-rest_run-01_physio.tsv.gz",
-                      colspec="respiratory_effort")
+samplerate, starttime, columns, data, compression, columnsource = utils.readbidstsv(
+    "testdata/sub-007_ses-05_task-rest_run-01_physio.tsv.gz",
+    colspec="respiratory_effort",
+)
 
 rawresp = np.nan_to_num(data.flatten())
 

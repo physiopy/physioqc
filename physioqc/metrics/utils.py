@@ -1,19 +1,19 @@
 """Miscellaneous utility functions for metric calculation."""
 
-import json
-import os
 import functools
+import json
 import logging
+import os
 
 import numpy as np
 import pandas as pd
-
 from peakdet.physio import Physio
 
 LGR = logging.getLogger(__name__)
 LGR.setLevel(logging.INFO)
 
 from scipy import signal
+
 
 def print_metric_call(metric, args):
     """

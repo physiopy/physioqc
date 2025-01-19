@@ -1,22 +1,19 @@
 """Denoising metrics for cardio recordings."""
 
-import numpy as np
-from numpy.polynomial import Polynomial
-from scipy.stats import kurtosis, skew, pearsonr
-
 import matplotlib.pyplot as plt
-from matplotlib.patches import Polygon
 import numpy as np
+from matplotlib.patches import Polygon
+from numpy.polynomial import Polynomial
 from peakdet import operations
 from scipy.signal import resample, welch
+from scipy.stats import kurtosis, pearsonr, skew
 
 from .. import references
 from ..due import due
 from .utils import butterbpfiltfilt, butterlpfiltfilt, hamming, physio_or_numpy
 
-def cardiacprefilter(
-    rawcard, Fs, lowerpass=0.1, upperpass=10.0, order=1, debug=False
-):
+
+def cardiacprefilter(rawcard, Fs, lowerpass=0.1, upperpass=10.0, order=1, debug=False):
     if debug:
         print(
             f"cardiacprefilter: Fs={Fs} order={order}, lowerpass={lowerpass}, upperpass={upperpass}"
@@ -28,7 +25,6 @@ def cardenvelopefilter(squarevals, Fs, upperpass=0.25, order=8, debug=False):
     if debug:
         print(f"cardenvelopefilter: Fs={Fs} order={order}, upperpass={upperpass}")
     return butterlpfiltfilt(Fs, upperpass, squarevals, order, debug=debug)
-
 
 
 def trendgen(thexvals, thefitcoffs, demean):
@@ -86,6 +82,7 @@ def detrend(inputdata, order=1, demean=False):
     thefittc = trendgen(thetimepoints, thecoffs, demean)
     return inputdata - thefittc
 
+
 @due.dcite(references.ELGENDI_2016)
 def calcplethskeqwness(
     waveform,
@@ -124,7 +121,7 @@ def calcplethskeqwness(
     "Optimal Signal Quality Index for Photoplethysmogram Signals". Bioengineering 2016, Vol. 3, Page 21 3, 21 (2016).
     """
 
-    #waveform = physio_or_numpy(waveform)
+    # waveform = physio_or_numpy(waveform)
 
     # detrend the waveform
     dt_waveform = detrend(waveform, order=detrendorder, demean=True)
@@ -145,6 +142,7 @@ def calcplethskeqwness(
     S_sqi_std = np.std(S_waveform)
 
     return S_sqi_mean, S_sqi_std, S_waveform
+
 
 @due.dcite(references.ELGENDI_2016)
 def calcplethkurtosis(
@@ -182,7 +180,7 @@ def calcplethkurtosis(
     Calculates the windowed kurtosis quality metric described in Elgendi, M. in
     "Optimal Signal Quality Index for Photoplethysmogram Signals". Bioengineering 2016, Vol. 3, Page 21 3, 21 (2016).
     """
-    #waveform = physio_or_numpy(waveform)
+    # waveform = physio_or_numpy(waveform)
 
     # detrend the waveform
     dt_waveform = detrend(waveform, order=detrendorder, demean=True)
@@ -221,6 +219,7 @@ def approximateentropy(waveform, m, r):
 
     return abs(_phi(m + 1) - _phi(m))
 
+
 @due.dcite(references.ELGENDI_2016)
 def calcplethentropy(
     waveform,
@@ -257,7 +256,7 @@ def calcplethentropy(
     Calculates the windowed entropy quality metric described in Elgendi, M. in
     "Optimal Signal Quality Index for Photoplethysmogram Signals". Bioengineering 2016, Vol. 3, Page 21 3, 21 (2016).
     """
-    #waveform = physio_or_numpy(waveform)
+    # waveform = physio_or_numpy(waveform)
 
     # detrend the waveform
     dt_waveform = detrend(waveform, order=detrendorder, demean=True)
@@ -281,14 +280,13 @@ def calcplethentropy(
     return E_sqi_mean, E_sqi_std, E_waveform
 
 
-
 @due.dcite(references.ROMANO_2023)
 def cardiacsqi(rawcard, Fs, debug=False):
     """Implementation of Romano's method from A Signal Quality Index for Improving the Estimation of
     Breath-by-Breath cardiac Rate During Sport and Exercise,
     IEEE SENSORS JOURNAL, VOL. 23, NO. 24, 15 DECEMBER 2023"""
 
-    #rawcard = physio_or_numpy(rawcard)
+    # rawcard = physio_or_numpy(rawcard)
 
     # get the sample frequency down to around 25 Hz for cardiac waveforms
     targetfreq = 50.0
@@ -297,7 +295,7 @@ def cardiacsqi(rawcard, Fs, debug=False):
         print(f"downsampling by a factor of {dsfac}")
         rawcard = rawcard[::dsfac] + 0.0
         Fs /= dsfac
-    timeaxis = np.linspace(0, len(rawcard)*Fs, len(rawcard), endpoint=False)
+    timeaxis = np.linspace(0, len(rawcard) * Fs, len(rawcard), endpoint=False)
 
     # A. Signal Preprocessing
     # Apply first order Butterworth bandpass, 0.01-2Hz
@@ -309,7 +307,6 @@ def cardiacsqi(rawcard, Fs, debug=False):
         plt.show()
     if debug:
         print("prefiltered: ", prefiltered)
-
 
     # normalize the derivative to the range of ~-1 to 1
     prefiltmax = np.max(prefiltered)
@@ -428,14 +425,18 @@ def cardiacsqi(rawcard, Fs, debug=False):
         thescaledheartbeats[thisheartbeat, :] = resample(
             cardfilteredderivs[startpt:endpt], scaledpeaklength
         )
-        thescaledheartbeats[thisheartbeat, :] -= np.min(thescaledheartbeats[thisheartbeat, :])
-        thescaledheartbeats[thisheartbeat, :] /= np.max(thescaledheartbeats[thisheartbeat, :])
+        thescaledheartbeats[thisheartbeat, :] -= np.min(
+            thescaledheartbeats[thisheartbeat, :]
+        )
+        thescaledheartbeats[thisheartbeat, :] /= np.max(
+            thescaledheartbeats[thisheartbeat, :]
+        )
         heartbeatlist.append(heartbeatinfo)
         if debug:
-            plt.plot(thescaledheartbeats[thisheartbeat, :], lw=0.1, color='#888888')
+            plt.plot(thescaledheartbeats[thisheartbeat, :], lw=0.1, color="#888888")
     averageheartbeat = np.mean(thescaledheartbeats, axis=0)
     if debug:
-        plt.plot(averageheartbeat, lw=2, color='black')
+        plt.plot(averageheartbeat, lw=2, color="black")
         plt.show()
     for thisheartbeat in range(numheartbeats):
         theheartbeatcorrs[thisheartbeat] = pearsonr(
@@ -481,6 +482,7 @@ def plotheartbeatqualities(heartbeatlist, totaltime=None):
     plt.ylim([0, 1.05])
     plt.show()
 
+
 def plotcardiacwaveformwithquality(waveform, heartbeatlist, Fs, plottype="rectangle"):
     # now plot the cardiac waveform, color coded for quality
 
@@ -504,9 +506,7 @@ def plotcardiacwaveformwithquality(waveform, heartbeatlist, Fs, plottype="rectan
 
     # plot the whole line if we're doing rectangle occlusion
     if plottype == "rectangle":
-        xvals = np.linspace(
-            0.0, len(waveform) / Fs, len(waveform), endpoint=False
-        )
+        xvals = np.linspace(0.0, len(waveform) / Fs, len(waveform), endpoint=False)
         plt.plot(xvals, waveform, color="black")
     yrange = np.max(waveform) - np.min(waveform)
     ymax = np.min(waveform) + yrange * 1.05
@@ -523,11 +523,17 @@ def plotcardiacwaveformwithquality(waveform, heartbeatlist, Fs, plottype="rectan
         startpt = int(heartbeatlist[thisheartbeat]["starttime"] * Fs)
         endpt = int(heartbeatlist[thisheartbeat]["endtime"] * Fs)
         if plottype == "rectangle":
-            therectangle = Polygon(((heartbeatlist[thisheartbeat]["starttime"], ymin),
-                                    (heartbeatlist[thisheartbeat]["starttime"], ymax),
-                                    (heartbeatlist[thisheartbeat]["endtime"], ymax),
-                                    (heartbeatlist[thisheartbeat]["endtime"], ymin)),
-                                   fc=thecolor, ec=thecolor, lw=0)
+            therectangle = Polygon(
+                (
+                    (heartbeatlist[thisheartbeat]["starttime"], ymin),
+                    (heartbeatlist[thisheartbeat]["starttime"], ymax),
+                    (heartbeatlist[thisheartbeat]["endtime"], ymax),
+                    (heartbeatlist[thisheartbeat]["endtime"], ymin),
+                ),
+                fc=thecolor,
+                ec=thecolor,
+                lw=0,
+            )
             ax.add_patch(therectangle)
             pass
         else:
@@ -536,7 +542,7 @@ def plotcardiacwaveformwithquality(waveform, heartbeatlist, Fs, plottype="rectan
             xvals = np.linspace(
                 startpt / Fs, (endpt + 1) / Fs, endpt - startpt + 1, endpoint=False
             )
-            yvals = waveform[startpt: endpt + 1]
+            yvals = waveform[startpt : endpt + 1]
             plt.plot(xvals, yvals, color=thecolor)
     plt.ylim([ymin, ymax])
     plt.title("Respiratory waveform, color coded by quantifiability")
@@ -544,6 +550,7 @@ def plotcardiacwaveformwithquality(waveform, heartbeatlist, Fs, plottype="rectan
     plt.ylabel("Amplitude (arbitrary units)")
     plt.xlim([0.0, len(waveform) / Fs])
     plt.show()
+
 
 def summarizeheartbeats(heartbeatlist):
     numheartbeats = len(heartbeatlist)
