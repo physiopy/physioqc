@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+
+import numpy as np
+import peakdet.io as pk_io
+
+import physioqc.metrics.cardiac as cardiac
+import physioqc.metrics.utils as utils
+
+samplerate, starttime, columns, data, compression, columnsource = \
+    utils.readbidstsv("testdata/sub-007_ses-05_task-rest_run-01_physio.tsv.gz",
+                      colspec="cardiac")
+
+rawcard = np.nan_to_num(data.flatten())
+
+print(rawcard)
+print(rawcard.shape)
+
+cardiaclist = cardiac.cardiacsqi(rawcard, samplerate, debug=True)
+cardiac.plotheartbeatqualities(cardiaclist, totaltime=(len(rawcard) / samplerate))
+cardiac.plotcardiacwaveformwithquality(rawcard, cardiaclist, samplerate)
+cardiac.summarizeheartbeats(cardiaclist)
