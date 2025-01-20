@@ -304,6 +304,7 @@ def cardiacsqi(rawcard, Fs, debug=False):
         plt.plot(timeaxis, rawcard)
         plt.plot(timeaxis, prefiltered)
         plt.title("Raw and prefiltered cardiac signal")
+        plt.legend(["Raw", "Prefiltered"])
         plt.show()
     if debug:
         print("prefiltered: ", prefiltered)
@@ -318,6 +319,7 @@ def cardiacsqi(rawcard, Fs, debug=False):
     if debug:
         plt.plot(timeaxis, normderiv)
         plt.title("Normalized cardiac signal")
+        plt.legend(["Normalized cardiac signal"])
         plt.show()
 
     # amplitude correct by flattening the envelope function
@@ -334,6 +336,7 @@ def cardiacsqi(rawcard, Fs, debug=False):
         plt.plot(timeaxis, esuperior)
         plt.plot(timeaxis, -einferior)
         plt.title("Normalized cardiac signal, upper and lower envelope")
+        plt.legend(["Normalized derivative", "Envelope top", "Envelope bottom"])
         plt.show()
     rmsnormderiv = normderiv / (esuperior + einferior)
     if debug:
@@ -545,7 +548,7 @@ def plotcardiacwaveformwithquality(waveform, heartbeatlist, Fs, plottype="rectan
             yvals = waveform[startpt : endpt + 1]
             plt.plot(xvals, yvals, color=thecolor)
     plt.ylim([ymin, ymax])
-    plt.title("Respiratory waveform, color coded by quantifiability")
+    plt.title("Cardiac waveform, color coded by quantifiability")
     plt.xlabel("Time in seconds")
     plt.ylabel("Amplitude (arbitrary units)")
     plt.xlim([0.0, len(waveform) / Fs])
