@@ -412,6 +412,18 @@ def plotbreathwaveformwithquality(waveform, breathlist, Fs, plottype="rectangle"
 
 
 def summarizebreaths(breathlist):
+    """
+    Print summary information about each detected breath.
+
+    Parameters
+    ----------
+    breathlist: list
+        A list of breathinfo dictionaries output from respiratorysqi
+
+    Returns
+    -------
+
+    """
     numbreaths = len(breathlist)
     for thisbreath in range(numbreaths):
         thebreathinfo = breathlist[thisbreath]
