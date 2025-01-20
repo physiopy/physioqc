@@ -23,17 +23,25 @@ def respirationprefilter(
     # return operations.filter_physio(rawresp, cutoffs=[lowerpass, upperpass], method='bandpass')
 
 
-def respenvelopefilter(squarevals, Fs, upperpass=0.1, order=8, debug=False):
+def respenvelopefilter(squarevals, Fs, upperpass=0.05, order=8, debug=False):
     if debug:
         print(f"respenvelopefilter: Fs={Fs} order={order}, upperpass={upperpass}")
     return butterlpfiltfilt(Fs, upperpass, squarevals, order, debug=debug)
 
 
 @due.dcite(references.ROMANO_2023)
-def respiratorysqi(rawresp, Fs, debug=False):
+def respiratorysqi(
+    rawresp, Fs, envelopelpffreq=0.05, slidingfilterpctwidth=10.0, debug=False
+):
     """Implementation of Romano's method from A Signal Quality Index for Improving the Estimation of
     Breath-by-Breath Respiratory Rate During Sport and Exercise,
-    IEEE SENSORS JOURNAL, VOL. 23, NO. 24, 15 DECEMBER 2023"""
+    IEEE SENSORS JOURNAL, VOL. 23, NO. 24, 15 DECEMBER 2023
+
+    NB: In part A, Romano does not specify the upper pass frequency for the respiratory envelope filter.
+        0.05Hz looks pretty good.
+        In part B, the width of the sliding window bandpass filter is not specified.  We use a range of +/- 5% of the
+        center frequency.
+    """
 
     # rawresp = physio_or_numpy(rawresp)
 
@@ -51,6 +59,8 @@ def respiratorysqi(rawresp, Fs, debug=False):
     if debug:
         plt.plot(rawresp)
         plt.plot(prefiltered)
+        plt.title("Raw and prefiltered respiratory signal")
+        plt.legend(["Raw", "Prefiltered"])
         plt.show()
     if debug:
         print("prefiltered: ", prefiltered)
@@ -67,25 +77,35 @@ def respiratorysqi(rawresp, Fs, debug=False):
     normderiv = 2.0 * (derivative - derivmin) / derivrange - 1.0
     if debug:
         plt.plot(normderiv)
+        plt.title("Normalized derivative of respiratory signal")
+        plt.legend(["Normalized derivative"])
         plt.show()
 
     # amplitude correct by flattening the envelope function
     esuperior = 2.0 * respenvelopefilter(
-        np.square(np.where(normderiv > 0.0, normderiv, 0.0)), Fs
+        np.square(np.where(normderiv > 0.0, normderiv, 0.0)),
+        Fs,
+        upperpass=envelopelpffreq,
     )
     esuperior = np.sqrt(np.where(esuperior > 0.0, esuperior, 0.0))
     einferior = 2.0 * respenvelopefilter(
-        np.square(np.where(normderiv < 0.0, normderiv, 0.0)), Fs
+        np.square(np.where(normderiv < 0.0, normderiv, 0.0)),
+        Fs,
+        upperpass=envelopelpffreq,
     )
-    einferior = np.sqrt(np.where(einferior > 0.0, einferior, 0.0))
+    einferior = -np.sqrt(np.where(einferior > 0.0, einferior, 0.0))
     if debug:
         plt.plot(normderiv)
         plt.plot(esuperior)
-        plt.plot(-einferior)
+        plt.plot(einferior)
+        plt.legend(["Normalized derivative", "esuperior", "einferior"])
         plt.show()
-    rmsnormderiv = normderiv / (esuperior + einferior)
+    rmsnormderiv = (normderiv - einferior) / (esuperior - einferior)
     if debug:
         plt.plot(rmsnormderiv)
+        plt.title(
+            "Normalized derivative of respiratory signal after envelope correction"
+        )
         plt.show()
 
     # B. Detection of breaths in sliding window
@@ -112,10 +132,9 @@ def respiratorysqi(rawresp, Fs, debug=False):
         segment -= np.mean(segment)
         thex, they = welch(segment, Fs, nfft=4096)
         peakfreqs[i] = thex[np.argmax(they)]
-        respfilterpctwidth = 10.0
         respfilterorder = 1
-        lowerfac = 1.0 - respfilterpctwidth / 200.0
-        upperfac = 1.0 + respfilterpctwidth / 200.0
+        lowerfac = 1.0 - slidingfilterpctwidth / 200.0
+        upperfac = 1.0 + slidingfilterpctwidth / 200.0
         lowerpass = peakfreqs[i] * lowerfac
         upperpass = peakfreqs[i] * upperfac
         if debug:
@@ -138,6 +157,8 @@ def respiratorysqi(rawresp, Fs, debug=False):
         print(peakfreqs)
         plt.plot(rmsnormderiv)
         plt.plot(respfilteredderivs)
+        plt.title("Normalized derivative before and after targeted bandpass filtering")
+        plt.legend(["Normalized derivative", "Filtered normalized derivative"])
         plt.show()
 
     # C. Breaths segmentation
