@@ -15,6 +15,28 @@ from .utils import butterbpfiltfilt, butterlpfiltfilt, hamming, physio_or_numpy
 def respirationprefilter(
     rawresp, Fs, lowerpass=0.01, upperpass=2.0, order=1, debug=False
 ):
+    """
+    Apply a bandpass prefilter to the respiration signal
+    Parameters
+    ----------
+    rawresp: ndarray
+        The raw respiration signal
+    Fs: float
+        The sampling frequency of the respiration signal in Hz
+    lowerpass: float
+        Lower pass cutoff frequency in Hz
+    upperpass: float
+        Upper pass cutoff frequency in Hz
+    order: int
+        Butterworth filter order
+    debug: bool
+        Print debug information and plot intermediate results
+
+    Returns
+    -------
+    filteredresp: ndarray
+
+    """
     if debug:
         print(
             f"respirationprefilter: Fs={Fs} order={order}, lowerpass={lowerpass}, upperpass={upperpass}"
@@ -24,6 +46,27 @@ def respirationprefilter(
 
 
 def respenvelopefilter(squarevals, Fs, upperpass=0.05, order=8, debug=False):
+    """
+    Apply a lowepass filter to the respiration envelope signal to get the RMS amplitude
+    Parameters
+    ----------
+    squarevals: ndarray
+        The square of the either the positive or negative portions of the respriation signal
+    Fs: float
+        The sampling frequency of the respiration signal in Hz
+    upperpass: float
+        Upper pass cutoff frequency in Hz
+    order: int
+        Butterworth filter order
+    debug: bool
+        Print debug information
+
+    Returns
+    -------
+    filteredenv: ndarray
+        The filtered respiration envelope signal
+
+    """
     if debug:
         print(f"respenvelopefilter: Fs={Fs} order={order}, upperpass={upperpass}")
     return butterlpfiltfilt(Fs, upperpass, squarevals, order, debug=debug)
@@ -33,7 +76,8 @@ def respenvelopefilter(squarevals, Fs, upperpass=0.05, order=8, debug=False):
 def respiratorysqi(
     rawresp, Fs, envelopelpffreq=0.05, slidingfilterpctwidth=10.0, debug=False
 ):
-    """Implementation of Romano's method from A Signal Quality Index for Improving the Estimation of
+    """
+    Implementation of Romano's method from A Signal Quality Index for Improving the Estimation of
     Breath-by-Breath Respiratory Rate During Sport and Exercise,
     IEEE SENSORS JOURNAL, VOL. 23, NO. 24, 15 DECEMBER 2023
 
@@ -41,8 +85,27 @@ def respiratorysqi(
         0.05Hz looks pretty good.
         In part B, the width of the sliding window bandpass filter is not specified.  We use a range of +/- 5% of the
         center frequency.
-    """
 
+    Parameters
+    ----------
+    rawresp: ndarray
+        The raw respiration signal
+    Fs: float
+        The sampling frequency of the respiration signal in Hz
+    envelopelpffreq: float
+        Cutoff frequency of the RMS envelope filter in Hz
+    slidingfilterpctwidth: float
+        Width of the sliding window bandpass filter in percent of the center frequency
+    debug: bool
+        Print debug information and plot intermediate results
+
+    Returns
+    -------
+    breathlist: list
+        List of "breathinfo" dictionaries for each detected breath.  Each breathinfo dictionary contains:
+            "startime", "centertime", and "endtime" of each detected breath in seconds from the start of the waveform,
+            and "correlation" - the Pierson correlation of that breath waveform with the average waveform.
+    """
     # rawresp = physio_or_numpy(rawresp)
 
     # get the sample frequency down to around 25 Hz for respiratory waveforms
@@ -207,6 +270,20 @@ def respiratorysqi(
 
 
 def plotbreathqualities(breathlist, totaltime=None):
+    """
+    Make an informational plot of quantifiability vs time for each detected breath
+
+    Parameters
+    ----------
+    breathlist: list
+        A list of breathinfo dictionaries output from respiratorysqi
+    totaltime: float
+        The maximum time to include in the plot.  If totaltime is None (default), plot every breath.
+
+    Returns
+    -------
+
+    """
     # set up the color codes
     color_0p9 = "#888888"
     color_0p8 = "#aa6666"
@@ -243,6 +320,26 @@ def plotbreathqualities(breathlist, totaltime=None):
 
 
 def plotbreathwaveformwithquality(waveform, breathlist, Fs, plottype="rectangle"):
+    """
+    Make an informational plot of the respiratory waveform with the quantifiability of each detected breath as a
+    color overlay.
+
+    Parameters
+    ----------
+    waveform: ndarray
+        The respiratory waveform
+    breathlist: list
+        A list of breathinfo dictionaries output from respiratorysqi
+    Fs: float
+        The sampling frequency of the respiratory waveform in Hz
+    plottype: str
+        The type of plot to make.  If plottype is rectangle (default), overlay a colored rectangle to show the
+        quantifiability of each detected breath.  If anything else, use the waveform line color to indicate the
+        quantifiability.
+    Returns
+    -------
+
+    """
     # now plot the respiratory waveform, color coded for quality
 
     # set up the color codes
@@ -272,7 +369,10 @@ def plotbreathwaveformwithquality(waveform, breathlist, Fs, plottype="rectangle"
     ymin = np.max(waveform) - yrange * 1.05
     for thisbreath in range(numbreaths):
         if thebreathcorrs[thisbreath] > 0.9:
-            thecolor = color_0p9
+            if plottype == "rectangle":
+                thecolor = color_0p9
+            else:
+                thecolor = "black"
         elif thebreathcorrs[thisbreath] > 0.8:
             thecolor = color_0p8
         elif thebreathcorrs[thisbreath] > 0.7:
