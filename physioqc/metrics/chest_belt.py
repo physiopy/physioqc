@@ -9,12 +9,12 @@ from scipy.stats import pearsonr
 
 from .. import references
 from ..due import due
-from .utils import hamming, physio_or_numpy
+from .utils import hamming
 
 
 def envelopedetect(data, upperpass=0.05, order=5):
     """
-
+    Detects the amplitude envelope of a pseudoperiodic waveform (respiration, cardiac, etc.)
     Parameters
     ----------
     data
@@ -55,30 +55,13 @@ def envelopedetect(data, upperpass=0.05, order=5):
     return einferior, esuperior
 
 
-@due.dcite(references.ROMANO_2023)
-def respiratorysqi(
-    rawresp, Fs, envelopelpffreq=0.075, slidingfilterpctwidth=10.0, debug=False
-):
+def respiratorysqi(rawresp, debug=False):
     """
-    Implementation of Romano's method from A Signal Quality Index for Improving the Estimation of
-    Breath-by-Breath Respiratory Rate During Sport and Exercise,
-    IEEE SENSORS JOURNAL, VOL. 23, NO. 24, 15 DECEMBER 2023
-
-    NB: In part A, Romano does not specify the upper pass frequency for the respiratory envelope filter.
-        0.075Hz looks pretty good.
-        In part B, the width of the sliding window bandpass filter is not specified.  We use a range of +/- 5% of the
-        center frequency.
-
+    Calculate the breath by breath quality of the respiratory signal
     Parameters
     ----------
-    rawresp: ndarray
-        The raw respiration signal
-    Fs: float
-        The sampling frequency of the respiration signal in Hz
-    envelopelpffreq: float
-        Cutoff frequency of the RMS envelope filter in Hz
-    slidingfilterpctwidth: float
-        Width of the sliding window bandpass filter in percent of the center frequency
+    rawresp: physio_like
+        The raw respiratory signal
     debug: bool
         Print debug information and plot intermediate results
 
@@ -87,20 +70,84 @@ def respiratorysqi(
     breathlist: list
         List of "breathinfo" dictionaries for each detected breath.  Each breathinfo dictionary contains:
             "startime", "centertime", and "endtime" of each detected breath in seconds from the start of the waveform,
-            and "correlation" - the Pierson correlation of that breath waveform with the average waveform.
+            and "correlation" - the Pearson correlation of that breath waveform with the average waveform.
+
     """
-    # rawresp = physio_or_numpy(rawresp)
+    targetfs = 25.0
+    prefilterlimits = [0.01, 2.0]
+    seglength = 12.0
+    segstep = 2.0
+    envelopelpffreq = 0.05
+    slidingfilterpctwidth = 10.0
+
+    return romanosqi(
+        rawresp,
+        targetfs=targetfs,
+        prefilterlimits=prefilterlimits,
+        envelopelpffreq=envelopelpffreq,
+        slidingfilterpctwidth=slidingfilterpctwidth,
+        seglength=seglength,
+        segstep=segstep,
+        debug=debug,
+    )
+
+
+@due.dcite(references.ROMANO_2023)
+def romanosqi(
+    rawresp,
+    targetfs=25.0,
+    prefilterlimits=(0.01, 2.0),
+    envelopelpffreq=0.05,
+    slidingfilterpctwidth=10.0,
+    seglength=12.0,
+    segstep=2.0,
+    debug=False,
+):
+    """
+    Implementation of Romano's method from A Signal Quality Index for Improving the Estimation of
+    Breath-by-Breath Respiratory Rate During Sport and Exercise,
+    IEEE SENSORS JOURNAL, VOL. 23, NO. 24, 15 DECEMBER 2023
+
+    NB: In part A, Romano does not specify the upper pass frequency for the respiratory envelope filter.
+        0.05Hz looks pretty good for respiration.
+        In part B, the width of the sliding window bandpass filter is not specified.  We use a range of +/- 5% of the
+        center frequency.
+
+    Parameters
+    ----------
+    rawresp: physio_like
+        The raw respiration signal
+    targetfs: float
+        Sample rate for internal calculations
+    prefilterlimits: tuple
+        Lower and upper frequency limits for prefiltering the input signal
+    envelopelpffreq: float
+        Cutoff frequency of the RMS envelope filter in Hz
+    slidingfilterpctwidth: float
+        Width of the sliding window bandpass filter in percent of the center frequency
+    seglength: float
+        Length of the window for measuring the waveform center frequency in seconds
+    segstep: float
+        Step size of the window for measuring the waveform center frequency in seconds
+    debug: bool
+        Print debug information and plot intermediate results
+
+    Returns
+    -------
+    breathlist: list
+        List of "breathinfo" dictionaries for each detected breath.  Each breathinfo dictionary contains:
+            "startime", "centertime", and "endtime" of each detected breath in seconds from the start of the waveform,
+            and "correlation" - the Pearson correlation of that breath waveform with the average waveform.
+    """
 
     # get the sample frequency down to around 25 Hz for respiratory waveforms
-    targetfs = 25.0
-    rawresp = Physio(rawresp, fs=Fs)
     rawresp = operations.interpolate_physio(rawresp, target_fs=targetfs)
 
     # A. Signal Preprocessing
     # Apply third order Butterworth bandpass, 0.01-2Hz
     prefiltered = operations.filter_physio(
         rawresp,
-        [0.01, 2.0],
+        prefilterlimits,
         "bandpass",
         order=3,
     )
@@ -147,10 +194,8 @@ def respiratorysqi(
         )
         plt.show()
 
-    # B. Detection of breaths in sliding window
-    seglength = 12.0
+    # B. Detection of peaks in sliding window
     segsamples = int(seglength * targetfs)
-    segstep = 2.0
     stepsamples = int(segstep * targetfs)
     totaltclength = len(rawresp)
     numsegs = int((totaltclength - segsamples) // stepsamples)
@@ -298,19 +343,17 @@ def plotbreathqualities(breathlist, totaltime=None):
     plt.show()
 
 
-def plotbreathwaveformwithquality(waveform, breathlist, Fs, plottype="rectangle"):
+def plotbreathwaveformwithquality(data, breathlist, plottype="rectangle"):
     """
     Make an informational plot of the respiratory waveform with the quantifiability of each detected breath as a
     color overlay.
 
     Parameters
     ----------
-    waveform: ndarray
+    data: physio_like
         The respiratory waveform
     breathlist: list
         A list of breathinfo dictionaries output from respiratorysqi
-    Fs: float
-        The sampling frequency of the respiratory waveform in Hz
     plottype: str
         The type of plot to make.  If plottype is rectangle (default), overlay a colored rectangle to show the
         quantifiability of each detected breath.  If anything else, use the waveform line color to indicate the
@@ -319,6 +362,9 @@ def plotbreathwaveformwithquality(waveform, breathlist, Fs, plottype="rectangle"
     -------
 
     """
+    waveform = data.data
+    Fs = data.fs
+
     # now plot the respiratory waveform, color coded for quality
 
     # set up the color codes

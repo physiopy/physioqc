@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import numpy as np
-import peakdet.io as pk_io
+from peakdet import Physio
 
 import physioqc.metrics.chest_belt as chest_belt
 import physioqc.metrics.utils as utils
@@ -11,14 +11,14 @@ samplerate, starttime, columns, data, compression, columnsource = utils.readbids
     colspec="respiratory_effort",
 )
 
-rawresp = np.nan_to_num(data.flatten())
+rawresp = Physio(np.nan_to_num(data.flatten()), fs=samplerate)
 
-print(rawresp)
+print(rawresp.data)
 
-breathlist = chest_belt.respiratorysqi(rawresp, samplerate, debug=True)
+breathlist = chest_belt.respiratorysqi(rawresp, debug=True)
 chest_belt.plotbreathqualities(breathlist, totaltime=(len(rawresp) / samplerate))
-chest_belt.plotbreathwaveformwithquality(rawresp, breathlist, samplerate)
+chest_belt.plotbreathwaveformwithquality(rawresp, breathlist)
 chest_belt.plotbreathwaveformwithquality(
-    rawresp, breathlist, samplerate, plottype="other"
+    rawresp, breathlist, plottype="other"
 )
 chest_belt.summarizebreaths(breathlist)
