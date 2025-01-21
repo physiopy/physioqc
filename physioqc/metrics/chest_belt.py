@@ -200,9 +200,7 @@ def romanosqi(
     rmsnormderiv = (normderiv - einferior) / (esuperior - einferior)
     if debug:
         plt.plot(rmsnormderiv)
-        plt.title(
-            f"Normalized derivative of {label} signal after envelope correction"
-        )
+        plt.title(f"Normalized derivative of {label} signal after envelope correction")
         plt.show()
 
     # B. Detection of peaks in sliding window
@@ -354,7 +352,9 @@ def plotbreathqualities(breathlist, totaltime=None):
     plt.show()
 
 
-def plotbreathwaveformwithquality(data, breathlist, label="respiratory", plottype="rectangle"):
+def plotbreathwaveformwithquality(
+    data, breathlist, label="respiratory", plottype="rectangle"
+):
     """
     Make an informational plot of the respiratory waveform with the quantifiability of each detected breath as a
     color overlay.

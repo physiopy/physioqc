@@ -7,10 +7,10 @@ from numpy.polynomial import Polynomial
 from peakdet import operations
 from scipy.signal import resample, welch
 from scipy.stats import kurtosis, pearsonr, skew
-from .chest_belt import romanosqi
 
 from .. import references
 from ..due import due
+from .chest_belt import romanosqi
 from .utils import butterbpfiltfilt, butterlpfiltfilt, hamming
 
 
@@ -280,6 +280,7 @@ def calcplethentropy(
 
     return E_sqi_mean, E_sqi_std, E_waveform
 
+
 def cardiacsqi(rawresp, debug=False):
     """
     Calculate the breath by breath quality of the respiratory signal
@@ -308,7 +309,6 @@ def cardiacsqi(rawresp, debug=False):
     # of that in points
     minperiod = 0.3
     distfrac = 0.75
-
 
     return romanosqi(
         rawresp,
