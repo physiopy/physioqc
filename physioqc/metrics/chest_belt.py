@@ -80,14 +80,22 @@ def respiratorysqi(rawresp, debug=False):
     envelopelpffreq = 0.05
     slidingfilterpctwidth = 10.0
 
+    # The fastest credible breathing rate is 20 breaths/min -> 3 seconds/breath, so set the dist to be 50%
+    # of that in points
+    minperiod = 3.0
+    distfrac = 0.5
+
     return romanosqi(
         rawresp,
         targetfs=targetfs,
         prefilterlimits=prefilterlimits,
         envelopelpffreq=envelopelpffreq,
         slidingfilterpctwidth=slidingfilterpctwidth,
+        minperiod=minperiod,
+        distfrac=distfrac,
         seglength=seglength,
         segstep=segstep,
+        label="respiratory",
         debug=debug,
     )
 
@@ -99,8 +107,11 @@ def romanosqi(
     prefilterlimits=(0.01, 2.0),
     envelopelpffreq=0.05,
     slidingfilterpctwidth=10.0,
+    minperiod=3.0,
+    distfrac=0.5,
     seglength=12.0,
     segstep=2.0,
+    label="respiratory",
     debug=False,
 ):
     """
@@ -154,7 +165,7 @@ def romanosqi(
     if debug:
         plt.plot(rawresp.data)
         plt.plot(prefiltered.data)
-        plt.title("Raw and prefiltered respiratory signal")
+        plt.title(f"Raw and prefiltered {label} signal")
         plt.legend(["Raw", "Prefiltered"])
         plt.show()
     if debug:
@@ -172,7 +183,7 @@ def romanosqi(
     normderiv = 2.0 * (derivative - derivmin) / derivrange - 1.0
     if debug:
         plt.plot(normderiv)
-        plt.title("Normalized derivative of respiratory signal")
+        plt.title(f"Normalized derivative of {label} signal")
         plt.legend(["Normalized derivative"])
         plt.show()
 
@@ -190,7 +201,7 @@ def romanosqi(
     if debug:
         plt.plot(rmsnormderiv)
         plt.title(
-            "Normalized derivative of respiratory signal after envelope correction"
+            f"Normalized derivative of {label} signal after envelope correction"
         )
         plt.show()
 
@@ -251,7 +262,7 @@ def romanosqi(
     # C. Breaths segmentation
     # The fastest credible breathing rate is 20 breaths/min -> 3 seconds/breath, so set the dist to be 50%
     # of that in points
-    thedist = int((3.0 * targetfs) / 2.0)
+    thedist = int(minperiod * targetfs * distfrac)
     peakinfo = operations.peakfind_physio(respfilteredderivs, thresh=0.05, dist=thedist)
     if debug:
         ax = operations.plot_physio(peakinfo)
@@ -343,7 +354,7 @@ def plotbreathqualities(breathlist, totaltime=None):
     plt.show()
 
 
-def plotbreathwaveformwithquality(data, breathlist, plottype="rectangle"):
+def plotbreathwaveformwithquality(data, breathlist, label="respiratory", plottype="rectangle"):
     """
     Make an informational plot of the respiratory waveform with the quantifiability of each detected breath as a
     color overlay.
@@ -429,7 +440,7 @@ def plotbreathwaveformwithquality(data, breathlist, plottype="rectangle"):
             yvals = waveform[startpt : endpt + 1]
             plt.plot(xvals, yvals, color=thecolor)
     plt.ylim([ymin, ymax])
-    plt.title("Respiratory waveform, color coded by quantifiability")
+    plt.title(f"{label} waveform, color coded by quantifiability")
     plt.xlabel("Time in seconds")
     plt.ylabel("Amplitude (arbitrary units)")
     plt.xlim([0.0, len(waveform) / Fs])

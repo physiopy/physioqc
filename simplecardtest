@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import numpy as np
-import peakdet.io as pk_io
+from peakdet import Physio
 
 import physioqc.metrics.cardiac as cardiac
 import physioqc.metrics.utils as utils
@@ -10,12 +10,12 @@ samplerate, starttime, columns, data, compression, columnsource = utils.readbids
     "testdata/sub-007_ses-05_task-rest_run-01_physio.tsv.gz", colspec="cardiac"
 )
 
-rawcard = np.nan_to_num(data.flatten())
+rawcard = Physio(np.nan_to_num(data.flatten()), fs=samplerate)
 
-print(rawcard)
-print(rawcard.shape)
+print(rawcard.data)
+print(rawcard.data.shape)
 
-cardiaclist = cardiac.cardiacsqi(rawcard, samplerate, debug=True)
-cardiac.plotheartbeatqualities(cardiaclist, totaltime=(len(rawcard) / samplerate))
+cardiaclist = cardiac.cardiacsqi(rawcard, debug=True)
+cardiac.plotheartbeatqualities(cardiaclist, totaltime=(len(rawcard.data) / samplerate))
 cardiac.plotcardiacwaveformwithquality(rawcard, cardiaclist, samplerate)
 cardiac.summarizeheartbeats(cardiaclist)

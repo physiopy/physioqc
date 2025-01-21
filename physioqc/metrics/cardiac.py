@@ -7,10 +7,11 @@ from numpy.polynomial import Polynomial
 from peakdet import operations
 from scipy.signal import resample, welch
 from scipy.stats import kurtosis, pearsonr, skew
+from .chest_belt import romanosqi
 
 from .. import references
 from ..due import due
-from .utils import butterbpfiltfilt, butterlpfiltfilt, hamming, physio_or_numpy
+from .utils import butterbpfiltfilt, butterlpfiltfilt, hamming
 
 
 def cardiacprefilter(rawcard, Fs, lowerpass=0.1, upperpass=10.0, order=1, debug=False):
@@ -279,175 +280,49 @@ def calcplethentropy(
 
     return E_sqi_mean, E_sqi_std, E_waveform
 
+def cardiacsqi(rawresp, debug=False):
+    """
+    Calculate the breath by breath quality of the respiratory signal
+    Parameters
+    ----------
+    rawresp: physio_like
+        The raw respiratory signal
+    debug: bool
+        Print debug information and plot intermediate results
 
-@due.dcite(references.ROMANO_2023)
-def cardiacsqi(rawcard, Fs, debug=False):
-    """Implementation of Romano's method from A Signal Quality Index for Improving the Estimation of
-    Breath-by-Breath cardiac Rate During Sport and Exercise,
-    IEEE SENSORS JOURNAL, VOL. 23, NO. 24, 15 DECEMBER 2023"""
+    Returns
+    -------
+    breathlist: list
+        List of "breathinfo" dictionaries for each detected breath.  Each breathinfo dictionary contains:
+            "startime", "centertime", and "endtime" of each detected breath in seconds from the start of the waveform,
+            and "correlation" - the Pearson correlation of that breath waveform with the average waveform.
 
-    # rawcard = physio_or_numpy(rawcard)
-
-    # get the sample frequency down to around 25 Hz for cardiac waveforms
-    targetfreq = 50.0
-    if Fs > targetfreq:
-        dsfac = int(Fs / targetfreq)
-        print(f"downsampling by a factor of {dsfac}")
-        rawcard = rawcard[::dsfac] + 0.0
-        Fs /= dsfac
-    timeaxis = np.linspace(0, len(rawcard) * Fs, len(rawcard), endpoint=False)
-
-    # A. Signal Preprocessing
-    # Apply first order Butterworth bandpass, 0.01-2Hz
-    prefiltered = cardiacprefilter(rawcard, Fs, debug=debug)
-    if debug:
-        plt.plot(timeaxis, rawcard)
-        plt.plot(timeaxis, prefiltered)
-        plt.title("Raw and prefiltered cardiac signal")
-        plt.legend(["Raw", "Prefiltered"])
-        plt.show()
-    if debug:
-        print("prefiltered: ", prefiltered)
-
-    # normalize the derivative to the range of ~-1 to 1
-    prefiltmax = np.max(prefiltered)
-    prefiltmin = np.min(prefiltered)
-    prefiltrange = prefiltmax - prefiltmin
-    if debug:
-        print(f"{prefiltmax=}, {prefiltmin=}, {prefiltrange=}")
-    normderiv = 2.0 * (prefiltered - prefiltmin) / prefiltrange - 1.0
-    if debug:
-        plt.plot(timeaxis, normderiv)
-        plt.title("Normalized cardiac signal")
-        plt.legend(["Normalized cardiac signal"])
-        plt.show()
-
-    # amplitude correct by flattening the envelope function
-    esuperior = 2.0 * cardenvelopefilter(
-        np.square(np.where(normderiv > 0.0, normderiv, 0.0)), Fs
-    )
-    esuperior = np.sqrt(np.where(esuperior > 0.0, esuperior, 0.0))
-    einferior = 2.0 * cardenvelopefilter(
-        np.square(np.where(normderiv < 0.0, normderiv, 0.0)), Fs
-    )
-    einferior = np.sqrt(np.where(einferior > 0.0, einferior, 0.0))
-    if debug:
-        plt.plot(timeaxis, normderiv)
-        plt.plot(timeaxis, esuperior)
-        plt.plot(timeaxis, -einferior)
-        plt.title("Normalized cardiac signal, upper and lower envelope")
-        plt.legend(["Normalized derivative", "Envelope top", "Envelope bottom"])
-        plt.show()
-    rmsnormderiv = normderiv / (esuperior + einferior)
-    if debug:
-        plt.plot(timeaxis, rmsnormderiv)
-        plt.title("RMSnormed cardiac signal")
-        plt.show()
-
-    # B. Detection of heartbeats in sliding window
-    seglength = 5.0
-    segsamples = int(seglength * Fs)
-    segstep = 1.5
-    stepsamples = int(segstep * Fs)
-    totaltclength = len(rawcard)
-    numsegs = int((totaltclength - segsamples) // stepsamples)
-    if (totaltclength - segsamples) % segsamples != 0:
-        numsegs += 1
-    peakfreqs = np.zeros((numsegs), dtype=np.float64)
-    cardfilteredderivs = rmsnormderiv * 0.0
-    cardfilteredweights = rmsnormderiv * 0.0
-    for i in range(numsegs):
-        if i < numsegs - 1:
-            segstart = i * stepsamples
-            segend = segstart + segsamples
-        else:
-            segstart = len(rawcard) - segsamples
-            segend = segstart + segsamples
-        segment = rmsnormderiv[segstart:segend] + 0.0
-        segment *= hamming(segsamples)
-        segment -= np.mean(segment)
-        if False:
-            thex, they = welch(segment, Fs, nperseg=2048)
-        else:
-            thex, they = welch(segment, Fs, nfft=4096)
-        peakfreqs[i] = thex[np.argmax(they)]
-        cardfilterpctwidth = 10.0
-        cardfilterorder = 1
-        lowerfac = 1.0 - cardfilterpctwidth / 200.0
-        upperfac = 1.0 + cardfilterpctwidth / 200.0
-        lowerpass = peakfreqs[i] * lowerfac
-        upperpass = peakfreqs[i] * upperfac
-        if debug:
-            print(peakfreqs[i], lowerfac, lowerpass, upperfac, upperpass)
-        filteredsegment = butterlpfiltfilt(
-            Fs, upperpass, segment, cardfilterorder, debug=False
-        )
-        filteredsegment -= np.mean(filteredsegment)
-        if i < numsegs - 1:
-            cardfilteredderivs[
-                i * stepsamples : (i * stepsamples) + segsamples
-            ] += filteredsegment
-            cardfilteredweights[i * stepsamples : (i * stepsamples) + segsamples] += 1.0
-        else:
-            cardfilteredderivs[-segsamples:] += filteredsegment
-            cardfilteredweights[-segsamples:] += 1.0
-    cardfilteredderivs /= cardfilteredweights
-    cardfilteredderivs /= np.std(cardfilteredderivs)
-    if debug:
-        print(peakfreqs)
-        plt.plot(rmsnormderiv)
-        plt.plot(cardfilteredderivs)
-        plt.title("Cardiac signal with peaks")
-        plt.show()
-
-    # C. heartbeats segmentation
+    """
+    targetfs = 50.0
+    prefilterlimits = [0.01, 5.0]
+    seglength = 4.0
+    segstep = 0.5
+    envelopelpffreq = 0.1
+    slidingfilterpctwidth = 10.0
     # The fastest credible cardiac rate is 200 bpm -> 0.3 seconds/heartbeat, so set the dist to be 75%
     # of that in points
-    thedist = int(0.75 * (0.3 * Fs))
-    peakinfo = operations.peakfind_physio(cardfilteredderivs, thresh=0.1, dist=thedist)
-    if debug:
-        ax = operations.plot_physio(peakinfo)
-        plt.show()
-    thetroughs = peakinfo.troughs
+    minperiod = 0.3
+    distfrac = 0.75
 
-    # D. Similarity Analysis and Exclusion of Unreliable heartbeats
-    numheartbeats = len(thetroughs) - 1
-    scaledpeaklength = 100
-    thescaledheartbeats = np.zeros((numheartbeats, scaledpeaklength), dtype=np.float64)
-    theheartbeatlocs = np.zeros((numheartbeats), dtype=np.float64)
-    theheartbeatcorrs = np.zeros((numheartbeats), dtype=np.float64)
-    heartbeatlist = []
-    for thisheartbeat in range(numheartbeats):
-        heartbeatinfo = {}
-        startpt = thetroughs[thisheartbeat]
-        endpt = thetroughs[thisheartbeat + 1]
-        theheartbeatlocs[thisheartbeat] = (endpt + startpt) / (Fs * 2.0)
-        heartbeatinfo["starttime"] = startpt / Fs
-        heartbeatinfo["endtime"] = endpt / Fs
-        heartbeatinfo["centertime"] = theheartbeatlocs[thisheartbeat]
-        thescaledheartbeats[thisheartbeat, :] = resample(
-            cardfilteredderivs[startpt:endpt], scaledpeaklength
-        )
-        thescaledheartbeats[thisheartbeat, :] -= np.min(
-            thescaledheartbeats[thisheartbeat, :]
-        )
-        thescaledheartbeats[thisheartbeat, :] /= np.max(
-            thescaledheartbeats[thisheartbeat, :]
-        )
-        heartbeatlist.append(heartbeatinfo)
-        if debug:
-            plt.plot(thescaledheartbeats[thisheartbeat, :], lw=0.1, color="#888888")
-    averageheartbeat = np.mean(thescaledheartbeats, axis=0)
-    if debug:
-        plt.plot(averageheartbeat, lw=2, color="black")
-        plt.show()
-    for thisheartbeat in range(numheartbeats):
-        theheartbeatcorrs[thisheartbeat] = pearsonr(
-            averageheartbeat, thescaledheartbeats[thisheartbeat, :]
-        ).statistic
-        heartbeatlist[thisheartbeat]["correlation"] = theheartbeatcorrs[thisheartbeat]
 
-    return heartbeatlist
+    return romanosqi(
+        rawresp,
+        targetfs=targetfs,
+        prefilterlimits=prefilterlimits,
+        envelopelpffreq=envelopelpffreq,
+        slidingfilterpctwidth=slidingfilterpctwidth,
+        minperiod=minperiod,
+        distfrac=distfrac,
+        seglength=seglength,
+        segstep=segstep,
+        label="cardiac",
+        debug=debug,
+    )
 
 
 def plotheartbeatqualities(heartbeatlist, totaltime=None):
