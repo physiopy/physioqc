@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+
+import numpy as np
+from peakdet import Physio
+
+import physioqc.metrics.chest_belt as chest_belt
+import physioqc.metrics.utils as utils
+
+samplerate, starttime, columns, data, compression, columnsource = utils.readbidstsv(
+    "testdata/sub-007_ses-05_task-rest_run-01_physio.tsv.gz",
+    colspec="respiratory_effort",
+)
+
+rawresp = Physio(np.nan_to_num(data.flatten()), fs=samplerate)
+
+print(rawresp.data)
+
+breathlist = chest_belt.respiratorysqi(rawresp, debug=True)
+chest_belt.plotbreathqualities(breathlist, totaltime=(len(rawresp) / samplerate))
+chest_belt.plotbreathwaveformwithquality(rawresp, breathlist)
+chest_belt.plotbreathwaveformwithquality(rawresp, breathlist, plottype="other")
+chest_belt.summarizebreaths(breathlist)
