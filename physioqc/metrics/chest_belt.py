@@ -153,6 +153,7 @@ def romanosqi(
 
     # get the sample frequency down to around 25 Hz for respiratory waveforms
     rawresp = operations.interpolate_physio(rawresp, target_fs=targetfs)
+    timeaxis = np.linspace(0.0, rawresp.data.shape[0] / targetfs, num=rawresp.data.shape[0], endpoint=False)
 
     # A. Signal Preprocessing
     # Apply third order Butterworth bandpass, 0.01-2Hz
@@ -163,8 +164,8 @@ def romanosqi(
         order=3,
     )
     if debug:
-        plt.plot(rawresp.data)
-        plt.plot(prefiltered.data)
+        plt.plot(timeaxis, rawresp.data)
+        plt.plot(timeaxis, prefiltered.data)
         plt.title(f"Raw and prefiltered {label} signal")
         plt.legend(["Raw", "Prefiltered"])
         plt.show()
@@ -182,7 +183,7 @@ def romanosqi(
         print(f"{derivmax=}, {derivmin=}, {derivrange=}")
     normderiv = 2.0 * (derivative - derivmin) / derivrange - 1.0
     if debug:
-        plt.plot(normderiv)
+        plt.plot(timeaxis, normderiv)
         plt.title(f"Normalized derivative of {label} signal")
         plt.legend(["Normalized derivative"])
         plt.show()
@@ -192,14 +193,14 @@ def romanosqi(
         Physio(normderiv, fs=targetfs), upperpass=envelopelpffreq, order=3
     )
     if debug:
-        plt.plot(normderiv)
-        plt.plot(esuperior)
-        plt.plot(einferior)
+        plt.plot(timeaxis, normderiv)
+        plt.plot(timeaxis, esuperior)
+        plt.plot(timeaxis, einferior)
         plt.legend(["Normalized derivative", "esuperior", "einferior"])
         plt.show()
     rmsnormderiv = (normderiv - einferior) / (esuperior - einferior)
     if debug:
-        plt.plot(rmsnormderiv)
+        plt.plot(timeaxis, rmsnormderiv)
         plt.title(
             f"Normalized derivative of {label} signal after envelope correction"
         )
@@ -215,6 +216,7 @@ def romanosqi(
     peakfreqs = np.zeros((numsegs), dtype=np.float64)
     respfilteredderivs = rmsnormderiv * 0.0
     respfilteredweights = rmsnormderiv * 0.0
+    segpeaks = []
     for i in range(numsegs):
         if i < numsegs - 1:
             segstart = i * stepsamples
@@ -240,6 +242,8 @@ def romanosqi(
             "lowpass",
             order=respfilterorder,
         ).data
+        thedist = int(targetfs * distfrac/ peakfreqs[i])
+        segpeaks += ((operations.peakfind_physio(filteredsegment, thresh=0.05, dist=thedist).peaks + segstart) / targetfs).tolist()
         filteredsegment -= np.mean(filteredsegment)
         if i < numsegs - 1:
             respfilteredderivs[
@@ -253,8 +257,8 @@ def romanosqi(
     respfilteredderivs /= np.std(respfilteredderivs)
     if debug:
         print(peakfreqs)
-        plt.plot(rmsnormderiv)
-        plt.plot(respfilteredderivs)
+        plt.plot(timeaxis, rmsnormderiv)
+        plt.plot(timeaxis, respfilteredderivs)
         plt.title("Normalized derivative before and after targeted bandpass filtering")
         plt.legend(["Normalized derivative", "Filtered normalized derivative"])
         plt.show()
@@ -262,6 +266,7 @@ def romanosqi(
     # C. Breaths segmentation
     # The fastest credible breathing rate is 20 breaths/min -> 3 seconds/breath, so set the dist to be 50%
     # of that in points
+    minperiod = 1.0 / np.min(peakfreqs)
     thedist = int(minperiod * targetfs * distfrac)
     peakinfo = operations.peakfind_physio(respfilteredderivs, thresh=0.05, dist=thedist)
     if debug:
