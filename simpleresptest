@@ -18,7 +18,5 @@ print(rawresp.data)
 breathlist = chest_belt.respiratorysqi(rawresp, debug=True)
 chest_belt.plotbreathqualities(breathlist, totaltime=(len(rawresp) / samplerate))
 chest_belt.plotbreathwaveformwithquality(rawresp, breathlist)
-chest_belt.plotbreathwaveformwithquality(
-    rawresp, breathlist, plottype="other"
-)
+chest_belt.plotbreathwaveformwithquality(rawresp, breathlist, plottype="other")
 chest_belt.summarizebreaths(breathlist)
