@@ -153,7 +153,9 @@ def romanosqi(
 
     # get the sample frequency down to around 25 Hz for respiratory waveforms
     rawresp = operations.interpolate_physio(rawresp, target_fs=targetfs)
-    timeaxis = np.linspace(0.0, rawresp.data.shape[0] / targetfs, num=rawresp.data.shape[0], endpoint=False)
+    timeaxis = np.linspace(
+        0.0, rawresp.data.shape[0] / targetfs, num=rawresp.data.shape[0], endpoint=False
+    )
 
     # A. Signal Preprocessing
     # Apply third order Butterworth bandpass, 0.01-2Hz
@@ -201,9 +203,7 @@ def romanosqi(
     rmsnormderiv = (normderiv - einferior) / (esuperior - einferior)
     if debug:
         plt.plot(timeaxis, rmsnormderiv)
-        plt.title(
-            f"Normalized derivative of {label} signal after envelope correction"
-        )
+        plt.title(f"Normalized derivative of {label} signal after envelope correction")
         plt.show()
 
     # B. Detection of peaks in sliding window
@@ -242,8 +242,16 @@ def romanosqi(
             "lowpass",
             order=respfilterorder,
         ).data
-        thedist = int(targetfs * distfrac/ peakfreqs[i])
-        segpeaks += ((operations.peakfind_physio(filteredsegment, thresh=0.05, dist=thedist).peaks + segstart) / targetfs).tolist()
+        thedist = int(targetfs * distfrac / peakfreqs[i])
+        segpeaks += (
+            (
+                operations.peakfind_physio(
+                    filteredsegment, thresh=0.05, dist=thedist
+                ).peaks
+                + segstart
+            )
+            / targetfs
+        ).tolist()
         filteredsegment -= np.mean(filteredsegment)
         if i < numsegs - 1:
             respfilteredderivs[
