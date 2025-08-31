@@ -2,6 +2,10 @@
 
 from .due import Doi
 
+ELGENDI_2016 = Doi("10.3390/bioengineering3040021")
+
+ROMANO_2023 = Doi("10.1109/JSEN.2023.3330444")
+
 CHANG_GLOVER_2009 = Doi("10.1016/j.neuroimage.2009.04.048")
 
 POWER_2018 = Doi("10.1073/pnas.1720985115")
