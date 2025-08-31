@@ -4,6 +4,8 @@ import sys
 
 import numpy as np
 import peakdet as pk
+from bids import layout
+from nireports.assembler.report import Report
 
 from .cli.run import _get_parser
 from .interfaces.interfaces import generate_figures, run_metrics, save_metrics
@@ -24,6 +26,10 @@ from .metrics.multimodal import (
     signal_fct,
     std,
 )
+
+BOOTSTRAP_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
+
+print("BOOTSTRAP path", BOOTSTRAP_PATH)
 
 
 def save_bash_call(outdir):
@@ -74,6 +80,9 @@ def physioqc(
 
     figures = [plot_average_peak, plot_histogram, plot_power_spectrum, plot_raw_data]
 
+    # Stand in for further BIDS support:
+    bids_entities = layout.parse_file_entities(filename=filename)
+
     # Load the data
     d = np.genfromtxt(filename)
 
@@ -88,10 +97,40 @@ def physioqc(
     metrics_df = run_metrics(metrics, data)
 
     # Generate figures
-    generate_figures(figures, data, outdir)
+    generate_figures(figures, data, outdir, bids_entities)
 
     # Save the metrics in the output folder
-    save_metrics(metrics_df, outdir)
+    save_metrics(metrics_df, outdir, bids_entities)
+
+    metric_dict = metrics_df.to_dict(orient="list")
+    metric_dict = {i: j for i, j in zip(metric_dict["Metric"], metric_dict["Value"])}
+    metadata = {
+        "about-metadata": {
+            "Metrics": metric_dict,
+            "Version": {"version": "pre functional, Definitely does not work yet ;)"},
+        }
+    }
+
+    filters = {k: bids_entities[k] for k in ["subject"]}
+
+    sub_folders = []
+    for k in ["subject", "session"]:
+        if k in bids_entities:
+            sub_folders.append("-".join([k[:3], bids_entities[k]]))
+
+    out_folder = os.path.join(outdir, *sub_folders, "figures")
+
+    robj = Report(
+        outdir,
+        "test",
+        reportlets_dir=out_folder,
+        bootstrap_file=os.path.join(BOOTSTRAP_PATH, "bootstrap.yml"),
+        metadata=metadata,
+        plugin_meta={},
+        **filters,
+    )
+
+    robj.generate_report()
 
 
 def _main(argv=None):
