@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """Parser for physioqc."""
 
-
 import argparse
 
 from physioqc import __version__
